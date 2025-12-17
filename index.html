@@ -618,6 +618,346 @@
             75% { transform: translateY(-10px) scale(1.05); }
         }
 
+        /* 월별 필터 */
+        .month-filter {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .month-filter h3 {
+            color: #FF8C00;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .month-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .month-btn {
+            background: #FFF8E1;
+            border: 2px solid #FFE082;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #F57C00;
+            font-weight: 600;
+        }
+
+        .month-btn:hover {
+            background: #FFC107;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .month-btn:active {
+            transform: scale(0.95);
+        }
+
+        .current-month {
+            font-size: 20px;
+            font-weight: 700;
+            color: #E65100;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        /* 달력 뷰 모달 */
+        .calendar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .calendar-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .calendar-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .calendar-modal.show .calendar-content {
+            transform: scale(1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .calendar-header h3 {
+            color: #FF8C00;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .close-calendar {
+            background: #FFE082;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-calendar:hover {
+            background: #FFC107;
+            transform: rotate(90deg);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 700;
+            color: #F57C00;
+            padding: 10px 5px;
+            font-size: 14px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #F5F5F5;
+            color: #999;
+            padding: 5px;
+        }
+
+        .calendar-day.current-month {
+            background: #FFF8E1;
+            color: #333;
+        }
+
+        .calendar-day.has-data {
+            background: linear-gradient(135deg, #FFD93D 0%, #FFC107 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .calendar-day.today {
+            border: 3px solid #FF8C00;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .calendar-day-number {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .calendar-day-count {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        /* 히스토리 아이템 삭제 버튼 */
+        .history-item {
+            position: relative;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+
+        .history-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn:hover {
+            background: #ff5252;
+            transform: scale(1.2) rotate(90deg);
+        }
+
+        .delete-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* 확인 다이얼로그 */
+        .confirm-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirm-dialog.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .confirm-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .confirm-dialog.show .confirm-content {
+            transform: scale(1);
+        }
+
+        .confirm-content h3 {
+            color: #FF8C00;
+            font-size: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .confirm-content p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirm-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirm {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: #E0E0E0;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #BDBDBD;
+            transform: translateY(-2px);
+        }
+
+        .view-calendar-btn {
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .view-calendar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(156, 39, 176, 0.5);
+        }
+
+        .view-calendar-btn:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 15px;
@@ -642,6 +982,31 @@
 
             .cute-heart {
                 font-size: 20px;
+            }
+
+            .calendar-grid {
+                gap: 5px;
+            }
+
+            .calendar-day {
+                font-size: 12px;
+            }
+
+            .calendar-day-number {
+                font-size: 14px;
+            }
+
+            .calendar-content {
+                padding: 20px;
+            }
+
+            .month-selector {
+                gap: 10px;
+            }
+
+            .current-month {
+                font-size: 18px;
+                min-width: 100px;
             }
         }
     </style>
@@ -671,6 +1036,16 @@
     </div>
 
     <div class="container">
+        <!-- 월별 필터 -->
+        <div class="month-filter">
+            <h3>📅 실적 조회 월</h3>
+            <div class="month-selector">
+                <button class="month-btn" onclick="changeMonth(-1)">◀</button>
+                <div class="current-month" id="currentMonth"></div>
+                <button class="month-btn" onclick="changeMonth(1)">▶</button>
+            </div>
+        </div>
+
         <!-- 대시보드 -->
         <div class="dashboard">
             <h2>💰 내 실적 현황</h2>
@@ -722,7 +1097,31 @@
         <!-- 실적 기록 -->
         <div class="history">
             <h2>📊 실적 기록</h2>
+            <button class="view-calendar-btn" onclick="openCalendar()">📅 달력으로 보기</button>
             <div id="historyList"></div>
+        </div>
+    </div>
+
+    <!-- 달력 뷰 모달 -->
+    <div class="calendar-modal" id="calendarModal">
+        <div class="calendar-content">
+            <div class="calendar-header">
+                <h3 id="calendarTitle"></h3>
+                <button class="close-calendar" onclick="closeCalendar()">×</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </div>
+
+    <!-- 확인 다이얼로그 -->
+    <div class="confirm-dialog" id="confirmDialog">
+        <div class="confirm-content">
+            <h3>⚠️ 실적 삭제</h3>
+            <p id="confirmMessage"></p>
+            <div class="confirm-buttons">
+                <button class="btn-cancel" onclick="closeConfirmDialog()">취소</button>
+                <button class="btn-confirm" onclick="confirmDelete()">삭제</button>
+            </div>
         </div>
     </div>
 
@@ -731,9 +1130,144 @@
     <script>
         // 로컬 스토리지 키
         const STORAGE_KEY = 'jina_sales_records';
+        
+        // 현재 선택된 연월
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth() + 1;
+        
+        // 삭제할 날짜 임시 저장
+        let deleteTarget = null;
 
         // 오늘 날짜 설정
         document.getElementById('dateInput').valueAsDate = new Date();
+
+        // 현재 월 표시 업데이트
+        function updateMonthDisplay() {
+            const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+            document.getElementById('currentMonth').textContent = `${currentYear}년 ${monthNames[currentMonth - 1]}`;
+        }
+
+        // 월 변경
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            } else if (currentMonth < 1) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            updateMonthDisplay();
+            updateDashboard(true);
+            displayHistory();
+        }
+
+        // 현재 월 기준으로 필터링된 데이터 가져오기
+        function getCurrentMonthData() {
+            const records = loadData();
+            const monthStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
+            return records.filter(record => record.date.startsWith(monthStr));
+        }
+
+        // 달력 열기
+        function openCalendar() {
+            const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+            document.getElementById('calendarTitle').textContent = `${currentYear}년 ${monthNames[currentMonth - 1]}`;
+            
+            generateCalendar();
+            document.getElementById('calendarModal').classList.add('show');
+        }
+
+        // 달력 닫기
+        function closeCalendar() {
+            document.getElementById('calendarModal').classList.remove('show');
+        }
+
+        // 달력 생성
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const records = getCurrentMonthData();
+            
+            // 요일 헤더
+            const dayHeaders = ['일', '월', '화', '수', '목', '금', '토'];
+            let html = dayHeaders.map(day => `<div class="calendar-day-header">${day}</div>`).join('');
+            
+            // 해당 월의 첫날과 마지막 날
+            const firstDay = new Date(currentYear, currentMonth - 1, 1);
+            const lastDay = new Date(currentYear, currentMonth, 0);
+            const firstDayOfWeek = firstDay.getDay();
+            const daysInMonth = lastDay.getDate();
+            
+            // 오늘 날짜
+            const today = new Date();
+            const isCurrentMonth = today.getFullYear() === currentYear && today.getMonth() + 1 === currentMonth;
+            
+            // 이전 달 빈 칸
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                html += '<div class="calendar-day"></div>';
+            }
+            
+            // 날짜 채우기
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const dayRecord = records.find(r => r.date === dateStr);
+                
+                let classes = 'calendar-day current-month';
+                if (isCurrentMonth && day === today.getDate()) {
+                    classes += ' today';
+                }
+                if (dayRecord) {
+                    classes += ' has-data';
+                }
+                
+                let content = `<div class="calendar-day-number">${day}</div>`;
+                if (dayRecord) {
+                    const total = dayRecord.giga + dayRecord.tv;
+                    content += `<div class="calendar-day-count">${total}건</div>`;
+                }
+                
+                html += `<div class="${classes}">${content}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        // 확인 다이얼로그 열기
+        function openConfirmDialog(date) {
+            deleteTarget = date;
+            const record = loadData().find(r => r.date === date);
+            if (record) {
+                document.getElementById('confirmMessage').textContent = 
+                    `${date} 실적을 삭제하시겠습니까?\n(기가 ${record.giga}건, TV ${record.tv}건)`;
+            }
+            document.getElementById('confirmDialog').classList.add('show');
+        }
+
+        // 확인 다이얼로그 닫기
+        function closeConfirmDialog() {
+            document.getElementById('confirmDialog').classList.remove('show');
+            deleteTarget = null;
+        }
+
+        // 삭제 확인
+        function confirmDelete() {
+            if (deleteTarget) {
+                deleteRecord(deleteTarget);
+                closeConfirmDialog();
+            }
+        }
+
+        // 실적 삭제
+        function deleteRecord(date) {
+            let records = loadData();
+            records = records.filter(r => r.date !== date);
+            saveData(records);
+            
+            updateDashboard(true);
+            displayHistory();
+            
+            showToast('실적이 삭제되었습니다 🗑️', 'success');
+        }
 
         // 파티클 효과 생성
         function createParticle(x, y, emoji) {
@@ -824,9 +1358,9 @@
             return amount.toLocaleString('ko-KR') + '원';
         }
 
-        // 대시보드 업데이트 (애니메이션 포함)
+        // 대시보드 업데이트 (현재 선택된 월만)
         function updateDashboard(animate = false) {
-            const records = loadData();
+            const records = getCurrentMonthData();
             let totalGiga = 0;
             let totalTV = 0;
 
@@ -860,13 +1394,13 @@
             document.getElementById('tvIncentive').textContent = formatCurrency(tvIncentive);
         }
 
-        // 실적 기록 표시
+        // 실적 기록 표시 (현재 선택된 월만)
         function displayHistory() {
-            const records = loadData();
+            const records = getCurrentMonthData();
             const historyList = document.getElementById('historyList');
 
             if (records.length === 0) {
-                historyList.innerHTML = '<div class="no-data">아직 등록된 실적이 없습니다 📝</div>';
+                historyList.innerHTML = '<div class="no-data">이번 달 실적이 없습니다 📝</div>';
                 return;
             }
 
@@ -880,6 +1414,7 @@
 
                 return `
                     <div class="history-item" style="animation-delay: ${index * 0.05}s" onclick="celebrateClick()">
+                        <button class="delete-btn" onclick="event.stopPropagation(); openConfirmDialog('${record.date}')">×</button>
                         <div class="date">${record.date}</div>
                         <div class="details">
                             <span class="item-name">기가 업셀</span>
@@ -945,6 +1480,13 @@
             }
 
             saveData(records);
+            
+            // 입력한 날짜의 월로 자동 이동
+            const inputDate = new Date(date);
+            currentYear = inputDate.getFullYear();
+            currentMonth = inputDate.getMonth() + 1;
+            updateMonthDisplay();
+            
             updateDashboard(true); // 애니메이션 활성화
             displayHistory();
             resetInputs();
@@ -991,7 +1533,21 @@
             }
         });
 
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('calendarModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCalendar();
+            }
+        });
+
+        document.getElementById('confirmDialog').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeConfirmDialog();
+            }
+        });
+
         // 초기 로드
+        updateMonthDisplay();
         updateDashboard(false);
         displayHistory();
 
