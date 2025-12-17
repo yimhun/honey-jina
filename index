@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지나의 꿀단지 🍯</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&family=Gaegu:wght@300;400;700&family=Single+Day&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFE5B4 100%);
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header .emoji {
+            font-size: 36px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(180deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 파티클 효과 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 24px;
+            animation: particleFall 3s ease-in forwards;
+            opacity: 0;
+        }
+
+        @keyframes particleFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) rotate(360deg);
+            }
+        }
+
+        /* 반짝이는 별 효과 */
+        .sparkle-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #FFD700;
+            font-size: 12px;
+            animation: sparkle 1.5s infinite;
+            pointer-events: none;
+        }
+
+        .sparkle:nth-child(1) { top: -5px; left: -5px; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: -5px; right: -5px; animation-delay: 0.3s; }
+        .sparkle:nth-child(3) { bottom: -5px; left: -5px; animation-delay: 0.6s; }
+        .sparkle:nth-child(4) { bottom: -5px; right: -5px; animation-delay: 0.9s; }
+
+        .dashboard {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .dashboard h2 {
+            color: #FF8C00;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .total-incentive {
+            background: linear-gradient(135deg, #FFD93D 0%, #FFC107 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .total-incentive:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.5);
+        }
+
+        .total-incentive:active {
+            transform: scale(0.98);
+        }
+
+        .total-incentive .label {
+            font-size: 14px;
+            color: #6B4E00;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .total-incentive .amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: #6B4E00;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #FFF8E1;
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #FFE082;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 8px 16px rgba(255, 193, 7, 0.3);
+            border-color: #FFC107;
+            background: #FFF9C4;
+        }
+
+        .stat-card:active {
+            transform: scale(0.95);
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #F57C00;
+            margin-bottom: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-label {
+            color: #E65100;
+        }
+
+        .stat-card .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #E65100;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-value {
+            transform: scale(1.1);
+            color: #FF6F00;
+        }
+
+        .stat-card .stat-sub {
+            font-size: 12px;
+            color: #FF8C00;
+            margin-top: 5px;
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+            animation: slideInUp 0.7s ease-out;
+        }
+
+        .input-section h2 {
+            color: #FF8C00;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .date-input {
+            margin-bottom: 20px;
+        }
+
+        .date-input label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .date-input input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #FFE082;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #FFF8E1;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .date-input input:focus {
+            outline: none;
+            border-color: #FFC107;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+            transform: scale(1.02);
+        }
+
+        .input-group {
+            background: #FFF8E1;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #FFE082;
+            transition: all 0.3s ease;
+        }
+
+        .input-group:hover {
+            border-color: #FFC107;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 15px;
+            color: #F57C00;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .input-group .incentive-info {
+            font-size: 12px;
+            color: #FF8C00;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #FFD54F;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 600;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #FFC107;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+            transform: scale(1.05);
+        }
+
+        .input-group input:hover {
+            border-color: #FFB300;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(255, 167, 38, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #FF8C00;
+            border: 2px solid #FFE082;
+        }
+
+        .btn-secondary:hover {
+            background: #FFF8E1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        .history {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .history h2 {
+            color: #FF8C00;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .history-item {
+            background: #FFF8E1;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid #FFC107;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+            border-left-width: 6px;
+            background: #FFF9C4;
+        }
+
+        .history-item .date {
+            font-size: 13px;
+            color: #F57C00;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .history-item .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .history-item .item-name {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .history-item .item-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #E65100;
+        }
+
+        .history-item .total {
+            font-size: 16px;
+            font-weight: 700;
+            color: #FF8C00;
+            text-align: right;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 2px solid #FFE082;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        /* 귀여운 메시지 오버레이 */
+        .cute-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .cute-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .cute-message {
+            background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 50%, #FFE5F0 100%);
+            border: 5px solid #FFB6C1;
+            border-radius: 30px;
+            padding: 50px 60px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4);
+            transform: scale(0.5) rotate(-10deg);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cute-overlay.show .cute-message {
+            transform: scale(1) rotate(0deg);
+        }
+
+        .cute-message::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .cute-message-text {
+            font-family: 'Single Day', cursive;
+            font-size: 48px;
+            color: #FF69B4;
+            text-align: center;
+            text-shadow: 
+                3px 3px 0px #FFF,
+                -1px -1px 0px #FFF,
+                1px -1px 0px #FFF,
+                -1px 1px 0px #FFF,
+                4px 4px 10px rgba(255, 105, 180, 0.5);
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .cute-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cute-heart {
+            position: absolute;
+            font-size: 30px;
+            animation: floatHeart 3s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .cute-heart:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .cute-heart:nth-child(2) { top: 20%; right: 10%; animation-delay: 0.5s; }
+        .cute-heart:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 1s; }
+        .cute-heart:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 1.5s; }
+        .cute-heart:nth-child(5) { top: 50%; left: 5%; animation-delay: 2s; }
+        .cute-heart:nth-child(6) { top: 50%; right: 5%; animation-delay: 2.5s; }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-15px) scale(1.1); }
+            50% { transform: translateY(0) scale(1); }
+            75% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .total-incentive .amount {
+                font-size: 30px;
+            }
+
+            .cute-message {
+                padding: 40px 30px;
+                border-width: 4px;
+            }
+
+            .cute-message-text {
+                font-size: 36px;
+            }
+
+            .cute-heart {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 파티클 효과 컨테이너 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 귀여운 메시지 오버레이 -->
+    <div class="cute-overlay" id="cuteOverlay">
+        <div class="cute-message">
+            <div class="cute-hearts">
+                <div class="cute-heart">💖</div>
+                <div class="cute-heart">💕</div>
+                <div class="cute-heart">💗</div>
+                <div class="cute-heart">💝</div>
+                <div class="cute-heart">💓</div>
+                <div class="cute-heart">💞</div>
+            </div>
+            <div class="cute-message-text">오늘도 수고하셨어용♡</div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="emoji">🍯</div>
+        <h1>지나의 꿀단지</h1>
+    </div>
+
+    <div class="container">
+        <!-- 대시보드 -->
+        <div class="dashboard">
+            <h2>💰 내 실적 현황</h2>
+            <div class="total-incentive" onclick="celebrateClick()">
+                <div class="label">누적 인센티브</div>
+                <div class="sparkle-container">
+                    <div class="amount" id="totalIncentive">0원</div>
+                    <span class="sparkle">✨</span>
+                    <span class="sparkle">✨</span>
+                    <span class="sparkle">✨</span>
+                    <span class="sparkle">✨</span>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">기가 업셀</div>
+                    <div class="stat-value" id="gigaCount">0건</div>
+                    <div class="stat-sub" id="gigaIncentive">0원</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">TV 업셀</div>
+                    <div class="stat-value" id="tvCount">0건</div>
+                    <div class="stat-sub" id="tvIncentive">0원</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 실적 입력 -->
+        <div class="input-section">
+            <h2>✨ 오늘의 실적 입력</h2>
+            <div class="date-input">
+                <label>날짜</label>
+                <input type="date" id="dateInput">
+            </div>
+            <div class="input-group">
+                <label>기가 업셀</label>
+                <div class="incentive-info">건당 20,000원</div>
+                <input type="number" id="gigaInput" min="0" value="0" placeholder="건수 입력">
+            </div>
+            <div class="input-group">
+                <label>TV 업셀</label>
+                <div class="incentive-info">건당 4,000원</div>
+                <input type="number" id="tvInput" min="0" value="0" placeholder="건수 입력">
+            </div>
+            <button class="btn btn-primary" onclick="addRecord()">💾 저장하기</button>
+            <button class="btn btn-secondary" onclick="resetInputs()">🔄 입력 초기화</button>
+        </div>
+
+        <!-- 실적 기록 -->
+        <div class="history">
+            <h2>📊 실적 기록</h2>
+            <div id="historyList"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // 로컬 스토리지 키
+        const STORAGE_KEY = 'jina_sales_records';
+
+        // 오늘 날짜 설정
+        document.getElementById('dateInput').valueAsDate = new Date();
+
+        // 파티클 효과 생성
+        function createParticle(x, y, emoji) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.textContent = emoji;
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 3000);
+        }
+
+        // 랜덤 파티클 생성
+        function createRandomParticles(count, emojis) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = window.innerHeight;
+                    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    createParticle(x, y, emoji);
+                }, i * 100);
+            }
+        }
+
+        // 축하 클릭 효과
+        function celebrateClick() {
+            createRandomParticles(15, ['🎉', '💰', '✨', '🌟', '💛', '🍯']);
+        }
+
+        // 숫자 카운팅 애니메이션
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = formatCurrency(value);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // 숫자 카운팅 애니메이션 (건수용)
+        function animateCount(element, start, end, duration, suffix) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // 귀여운 메시지 오버레이 표시
+        function showCuteMessage() {
+            const overlay = document.getElementById('cuteOverlay');
+            overlay.classList.add('show');
+            
+            // 하트 파티클 효과
+            createRandomParticles(30, ['💖', '💕', '💗', '💝', '💓', '💞', '🌸', '✨', '🌟']);
+            
+            // 3초 후 자동으로 닫기
+            setTimeout(() => {
+                overlay.classList.remove('show');
+            }, 3000);
+        }
+
+        // 데이터 로드
+        function loadData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        // 데이터 저장
+        function saveData(records) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        }
+
+        // 금액 포맷팅
+        function formatCurrency(amount) {
+            return amount.toLocaleString('ko-KR') + '원';
+        }
+
+        // 대시보드 업데이트 (애니메이션 포함)
+        function updateDashboard(animate = false) {
+            const records = loadData();
+            let totalGiga = 0;
+            let totalTV = 0;
+
+            records.forEach(record => {
+                totalGiga += record.giga;
+                totalTV += record.tv;
+            });
+
+            const gigaIncentive = totalGiga * 20000;
+            const tvIncentive = totalTV * 4000;
+            const totalIncentive = gigaIncentive + tvIncentive;
+
+            if (animate) {
+                // 애니메이션으로 업데이트
+                const currentTotal = parseInt(document.getElementById('totalIncentive').textContent.replace(/[^0-9]/g, '')) || 0;
+                animateValue(document.getElementById('totalIncentive'), currentTotal, totalIncentive, 1000);
+                
+                const currentGigaCount = parseInt(document.getElementById('gigaCount').textContent) || 0;
+                animateCount(document.getElementById('gigaCount'), currentGigaCount, totalGiga, 800, '건');
+                
+                const currentTvCount = parseInt(document.getElementById('tvCount').textContent) || 0;
+                animateCount(document.getElementById('tvCount'), currentTvCount, totalTV, 800, '건');
+            } else {
+                // 즉시 업데이트
+                document.getElementById('totalIncentive').textContent = formatCurrency(totalIncentive);
+                document.getElementById('gigaCount').textContent = totalGiga + '건';
+                document.getElementById('tvCount').textContent = totalTV + '건';
+            }
+
+            document.getElementById('gigaIncentive').textContent = formatCurrency(gigaIncentive);
+            document.getElementById('tvIncentive').textContent = formatCurrency(tvIncentive);
+        }
+
+        // 실적 기록 표시
+        function displayHistory() {
+            const records = loadData();
+            const historyList = document.getElementById('historyList');
+
+            if (records.length === 0) {
+                historyList.innerHTML = '<div class="no-data">아직 등록된 실적이 없습니다 📝</div>';
+                return;
+            }
+
+            // 날짜순 정렬 (최신순)
+            records.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            historyList.innerHTML = records.map((record, index) => {
+                const gigaIncentive = record.giga * 20000;
+                const tvIncentive = record.tv * 4000;
+                const total = gigaIncentive + tvIncentive;
+
+                return `
+                    <div class="history-item" style="animation-delay: ${index * 0.05}s" onclick="celebrateClick()">
+                        <div class="date">${record.date}</div>
+                        <div class="details">
+                            <span class="item-name">기가 업셀</span>
+                            <span class="item-value">${record.giga}건 / ${formatCurrency(gigaIncentive)}</span>
+                        </div>
+                        <div class="details">
+                            <span class="item-name">TV 업셀</span>
+                            <span class="item-value">${record.tv}건 / ${formatCurrency(tvIncentive)}</span>
+                        </div>
+                        <div class="total">합계: ${formatCurrency(total)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 토스트 메시지 표시 (타입별)
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            
+            // 파티클 효과
+            if (type === 'success') {
+                createRandomParticles(10, ['🎉', '✨', '🌟']);
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // 실적 추가
+        function addRecord() {
+            const date = document.getElementById('dateInput').value;
+            const giga = parseInt(document.getElementById('gigaInput').value) || 0;
+            const tv = parseInt(document.getElementById('tvInput').value) || 0;
+
+            if (!date) {
+                showToast('날짜를 선택해주세요! 📅', 'warning');
+                return;
+            }
+
+            if (giga === 0 && tv === 0) {
+                showToast('실적을 입력해주세요! 📝', 'warning');
+                return;
+            }
+
+            const records = loadData();
+            
+            // 같은 날짜 기록이 있는지 확인
+            const existingIndex = records.findIndex(r => r.date === date);
+            
+            if (existingIndex !== -1) {
+                // 기존 기록 업데이트
+                records[existingIndex].giga += giga;
+                records[existingIndex].tv += tv;
+                showToast('실적이 업데이트되었습니다! 🎉', 'success');
+            } else {
+                // 새 기록 추가
+                records.push({ date, giga, tv });
+                showToast('실적이 저장되었습니다! 🎉', 'success');
+            }
+
+            saveData(records);
+            updateDashboard(true); // 애니메이션 활성화
+            displayHistory();
+            resetInputs();
+            
+            // 축하 파티클 효과
+            createRandomParticles(20, ['💰', '🎊', '🎉', '✨', '🌟', '💛', '🍯']);
+            
+            // 귀여운 메시지 오버레이 표시
+            setTimeout(() => {
+                showCuteMessage();
+            }, 500);
+        }
+
+        // 입력 초기화
+        function resetInputs() {
+            document.getElementById('gigaInput').value = '0';
+            document.getElementById('tvInput').value = '0';
+            document.getElementById('dateInput').valueAsDate = new Date();
+        }
+
+        // 입력 필드에 이벤트 리스너 추가
+        document.getElementById('gigaInput').addEventListener('focus', function() {
+            this.select();
+        });
+
+        document.getElementById('tvInput').addEventListener('focus', function() {
+            this.select();
+        });
+
+        // 입력 시 실시간 피드백
+        document.getElementById('gigaInput').addEventListener('input', function() {
+            const value = parseInt(this.value) || 0;
+            if (value > 0) {
+                this.style.color = '#E65100';
+                this.style.fontWeight = '700';
+            }
+        });
+
+        document.getElementById('tvInput').addEventListener('input', function() {
+            const value = parseInt(this.value) || 0;
+            if (value > 0) {
+                this.style.color = '#E65100';
+                this.style.fontWeight = '700';
+            }
+        });
+
+        // 초기 로드
+        updateDashboard(false);
+        displayHistory();
+
+        // 웰컴 파티클 효과
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                createRandomParticles(8, ['🍯', '✨', '🌟']);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
