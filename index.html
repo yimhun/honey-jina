@@ -689,7 +689,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
-            padding: 20px;
+            padding: 10px;
         }
 
         .calendar-modal.show {
@@ -700,10 +700,10 @@
         .calendar-content {
             background: white;
             border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
+            padding: 20px;
+            max-width: 500px;
             width: 100%;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             transform: scale(0.8);
@@ -718,12 +718,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .calendar-header h3 {
             color: #FF8C00;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
         }
 
@@ -731,14 +731,15 @@
             background: #FFE082;
             border: none;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
+            width: 36px;
+            height: 36px;
+            font-size: 22px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .close-calendar:hover {
@@ -749,32 +750,32 @@
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 4px;
         }
 
         .calendar-day-header {
             text-align: center;
             font-weight: 700;
             color: #F57C00;
-            padding: 10px 5px;
-            font-size: 14px;
+            padding: 8px 2px;
+            font-size: 13px;
         }
 
         .calendar-day {
             aspect-ratio: 1;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             background: #F5F5F5;
             color: #999;
-            padding: 5px;
+            padding: 4px;
+            min-height: 0;
         }
 
         .calendar-day.current-month {
@@ -789,21 +790,21 @@
         }
 
         .calendar-day.today {
-            border: 3px solid #FF8C00;
+            border: 2px solid #FF8C00;
         }
 
         .calendar-day:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             z-index: 1;
         }
 
         .calendar-day-number {
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 2px;
         }
 
         .calendar-day-count {
-            font-size: 10px;
+            font-size: 9px;
             opacity: 0.9;
         }
 
@@ -984,20 +985,55 @@
                 font-size: 20px;
             }
 
-            .calendar-grid {
-                gap: 5px;
-            }
-
-            .calendar-day {
-                font-size: 12px;
-            }
-
-            .calendar-day-number {
-                font-size: 14px;
+            .calendar-modal {
+                padding: 5px;
             }
 
             .calendar-content {
-                padding: 20px;
+                padding: 15px;
+                max-height: 90vh;
+                border-radius: 15px;
+            }
+
+            .calendar-header {
+                margin-bottom: 12px;
+            }
+
+            .calendar-header h3 {
+                font-size: 18px;
+            }
+
+            .close-calendar {
+                width: 32px;
+                height: 32px;
+                font-size: 20px;
+            }
+
+            .calendar-grid {
+                gap: 3px;
+            }
+
+            .calendar-day-header {
+                font-size: 11px;
+                padding: 6px 2px;
+            }
+
+            .calendar-day {
+                font-size: 11px;
+                border-radius: 8px;
+                padding: 2px;
+            }
+
+            .calendar-day-number {
+                font-size: 13px;
+            }
+
+            .calendar-day-count {
+                font-size: 8px;
+            }
+
+            .calendar-day.today {
+                border-width: 2px;
             }
 
             .month-selector {
@@ -1161,7 +1197,9 @@
         };
 
         // Firebase 데이터 로드 완료 후 초기화
-        loadFirebaseData();
+        window.addEventListener("DOMContentLoaded", function() {
+            setTimeout(loadFirebaseData, 100);
+        });
     </script>
 
     <script>
@@ -1185,13 +1223,29 @@
 
         // Firebase에서 데이터 로드
         async function loadFirebaseData() {
+            // Firebase 초기화 확인 (최대 5초 대기)
+            let attempts = 0;
+            while ((!window.firebaseDB || !window.firebaseDB.get) && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+
+            if (!window.firebaseDB || !window.firebaseDB.get) {
+                console.error('Firebase 초기화 실패');
+                showToast('Firebase 연결 실패. 페이지를 새로고침해주세요.', 'error');
+                return;
+            }
+
             isLoading = true;
             try {
+                console.log('Firebase 데이터 로드 시작...');
                 const snapshot = await window.firebaseDB.get(window.firebaseDB.recordsRef);
                 if (snapshot.exists()) {
                     const data = snapshot.val();
                     cachedRecords = Object.values(data);
+                    console.log('Firebase 데이터 로드 완료:', cachedRecords.length, '개');
                 } else {
+                    console.log('Firebase에 데이터 없음, 마이그레이션 시도...');
                     // 로컬스토리지에서 마이그레이션
                     await migrateFromLocalStorage();
                 }
@@ -1230,13 +1284,15 @@
         // 실시간 동기화
         function startRealtimeSync() {
             window.firebaseDB.onValue(window.firebaseDB.recordsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    cachedRecords = Object.values(data);
+                    console.log('Firebase 데이터 동기화:', cachedRecords);
+                } else {
+                    cachedRecords = [];
+                }
+                // 로딩 중이 아닐 때만 UI 업데이트
                 if (!isLoading) {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        cachedRecords = Object.values(data);
-                    } else {
-                        cachedRecords = [];
-                    }
                     updateDashboard(false);
                     displayHistory();
                 }
@@ -1365,11 +1421,15 @@
                 const newRecords = cachedRecords.filter(r => r.date !== date);
                 await saveData(newRecords);
                 
+                // UI 즉시 업데이트
+                isLoading = false;
+                updateDashboard(true);
+                displayHistory();
+                
                 showToast('실적이 삭제되었습니다 🗑️', 'success');
             } catch (error) {
                 console.error('삭제 오류:', error);
                 showToast('삭제 중 오류가 발생했습니다', 'error');
-            } finally {
                 isLoading = false;
             }
         }
@@ -1455,6 +1515,12 @@
         // 데이터 저장 (Firebase)
         async function saveData(records) {
             try {
+                // Firebase 초기화 확인
+                if (!window.firebaseDB || !window.firebaseDB.set) {
+                    console.error('Firebase가 아직 초기화되지 않았습니다');
+                    throw new Error('Firebase 초기화 대기 중...');
+                }
+
                 // 날짜를 키로 사용하여 저장
                 const dataObject = {};
                 records.forEach(record => {
@@ -1464,6 +1530,7 @@
                 
                 await window.firebaseDB.set(window.firebaseDB.recordsRef, dataObject);
                 cachedRecords = records;
+                console.log('Firebase 저장 완료:', records.length, '개');
             } catch (error) {
                 console.error('Firebase 저장 오류:', error);
                 throw error;
@@ -1606,6 +1673,11 @@
                 currentMonth = inputDate.getMonth() + 1;
                 updateMonthDisplay();
                 
+                // UI 즉시 업데이트
+                isLoading = false;
+                updateDashboard(true);
+                displayHistory();
+                
                 resetInputs();
                 
                 // 축하 파티클 효과
@@ -1618,7 +1690,6 @@
             } catch (error) {
                 console.error('저장 오류:', error);
                 showToast('저장 중 오류가 발생했습니다', 'error');
-            } finally {
                 isLoading = false;
             }
         }
