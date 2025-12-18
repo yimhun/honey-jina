@@ -1097,9 +1097,9 @@
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">기가 업셀</div>
-                    <div class="stat-value" id="gigaCount">0건</div>
-                    <div class="stat-sub" id="gigaIncentive">0원</div>
+                    <div class="stat-label">인터넷 업셀</div>
+                    <div class="stat-value" id="internetCount">0건</div>
+                    <div class="stat-sub" id="internetIncentive">0원</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">TV 업셀</div>
@@ -1117,9 +1117,29 @@
                 <input type="date" id="dateInput">
             </div>
             <div class="input-group">
-                <label>기가 업셀</label>
+                <label>인터넷 6,600원</label>
+                <div class="incentive-info">건당 18,400원</div>
+                <input type="number" id="internet6600Input" min="0" value="0" placeholder="건수 입력">
+            </div>
+            <div class="input-group">
+                <label>인터넷 5,500원</label>
                 <div class="incentive-info">건당 20,000원</div>
-                <input type="number" id="gigaInput" min="0" value="0" placeholder="건수 입력">
+                <input type="number" id="internet5500Input" min="0" value="0" placeholder="건수 입력">
+            </div>
+            <div class="input-group">
+                <label>인터넷 3,300원</label>
+                <div class="incentive-info">건당 23,200원</div>
+                <input type="number" id="internet3300Input" min="0" value="0" placeholder="건수 입력">
+            </div>
+            <div class="input-group">
+                <label>인터넷 2,200원</label>
+                <div class="incentive-info">건당 24,800원</div>
+                <input type="number" id="internet2200Input" min="0" value="0" placeholder="건수 입력">
+            </div>
+            <div class="input-group">
+                <label>인터넷 1,100원</label>
+                <div class="incentive-info">건당 26,400원</div>
+                <input type="number" id="internet1100Input" min="0" value="0" placeholder="건수 입력">
             </div>
             <div class="input-group">
                 <label>TV 업셀</label>
@@ -1379,7 +1399,11 @@
                 
                 let content = `<div class="calendar-day-number">${day}</div>`;
                 if (dayRecord) {
-                    const total = dayRecord.giga + dayRecord.tv;
+                    const totalInternet = (dayRecord.internet6600 || 0) + (dayRecord.internet5500 || 0) + 
+                                         (dayRecord.internet3300 || 0) + (dayRecord.internet2200 || 0) + 
+                                         (dayRecord.internet1100 || 0) + (dayRecord.giga || 0);
+                    const totalTV = dayRecord.tv || 0;
+                    const total = totalInternet + totalTV;
                     content += `<div class="calendar-day-count">${total}건</div>`;
                 }
                 
@@ -1394,8 +1418,16 @@
             deleteTarget = date;
             const record = cachedRecords.find(r => r.date === date);
             if (record) {
-                document.getElementById('confirmMessage').textContent = 
-                    `${date} 실적을 삭제하시겠습니까?\n(기가 ${record.giga}건, TV ${record.tv}건)`;
+                let message = `${date} 실적을 삭제하시겠습니까?\n\n`;
+                if (record.internet6600) message += `인터넷 6,600: ${record.internet6600}건\n`;
+                if (record.internet5500) message += `인터넷 5,500: ${record.internet5500}건\n`;
+                if (record.internet3300) message += `인터넷 3,300: ${record.internet3300}건\n`;
+                if (record.internet2200) message += `인터넷 2,200: ${record.internet2200}건\n`;
+                if (record.internet1100) message += `인터넷 1,100: ${record.internet1100}건\n`;
+                if (record.giga) message += `기가 업셀: ${record.giga}건\n`;
+                if (record.tv) message += `TV 업셀: ${record.tv}건`;
+                
+                document.getElementById('confirmMessage').textContent = message;
             }
             document.getElementById('confirmDialog').classList.add('show');
         }
@@ -1545,36 +1577,55 @@
         // 대시보드 업데이트 (현재 선택된 월만)
         function updateDashboard(animate = false) {
             const records = getCurrentMonthData();
-            let totalGiga = 0;
+            let totalInternet = 0;
             let totalTV = 0;
+            let internetIncentive = 0;
+            let tvIncentive = 0;
 
             records.forEach(record => {
-                totalGiga += record.giga;
-                totalTV += record.tv;
+                // 인터넷 업셀 집계
+                totalInternet += (record.internet6600 || 0) + (record.internet5500 || 0) + 
+                                 (record.internet3300 || 0) + (record.internet2200 || 0) + 
+                                 (record.internet1100 || 0);
+                
+                // 인터넷 인센티브 계산
+                internetIncentive += (record.internet6600 || 0) * 18400;
+                internetIncentive += (record.internet5500 || 0) * 20000;
+                internetIncentive += (record.internet3300 || 0) * 23200;
+                internetIncentive += (record.internet2200 || 0) * 24800;
+                internetIncentive += (record.internet1100 || 0) * 26400;
+                
+                // TV 업셀 집계
+                totalTV += record.tv || 0;
+                tvIncentive += (record.tv || 0) * 4000;
+                
+                // 기존 giga 데이터 마이그레이션 (호환성)
+                if (record.giga) {
+                    totalInternet += record.giga;
+                    internetIncentive += record.giga * 20000;
+                }
             });
 
-            const gigaIncentive = totalGiga * 20000;
-            const tvIncentive = totalTV * 4000;
-            const totalIncentive = gigaIncentive + tvIncentive;
+            const totalIncentive = internetIncentive + tvIncentive;
 
             if (animate) {
                 // 애니메이션으로 업데이트
                 const currentTotal = parseInt(document.getElementById('totalIncentive').textContent.replace(/[^0-9]/g, '')) || 0;
                 animateValue(document.getElementById('totalIncentive'), currentTotal, totalIncentive, 1000);
                 
-                const currentGigaCount = parseInt(document.getElementById('gigaCount').textContent) || 0;
-                animateCount(document.getElementById('gigaCount'), currentGigaCount, totalGiga, 800, '건');
+                const currentInternetCount = parseInt(document.getElementById('internetCount').textContent) || 0;
+                animateCount(document.getElementById('internetCount'), currentInternetCount, totalInternet, 800, '건');
                 
                 const currentTvCount = parseInt(document.getElementById('tvCount').textContent) || 0;
                 animateCount(document.getElementById('tvCount'), currentTvCount, totalTV, 800, '건');
             } else {
                 // 즉시 업데이트
                 document.getElementById('totalIncentive').textContent = formatCurrency(totalIncentive);
-                document.getElementById('gigaCount').textContent = totalGiga + '건';
+                document.getElementById('internetCount').textContent = totalInternet + '건';
                 document.getElementById('tvCount').textContent = totalTV + '건';
             }
 
-            document.getElementById('gigaIncentive').textContent = formatCurrency(gigaIncentive);
+            document.getElementById('internetIncentive').textContent = formatCurrency(internetIncentive);
             document.getElementById('tvIncentive').textContent = formatCurrency(tvIncentive);
         }
 
@@ -1592,22 +1643,45 @@
             records.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             historyList.innerHTML = records.map((record, index) => {
-                const gigaIncentive = record.giga * 20000;
-                const tvIncentive = record.tv * 4000;
-                const total = gigaIncentive + tvIncentive;
+                // 인터넷 업셀 계산
+                const internet6600 = record.internet6600 || 0;
+                const internet5500 = record.internet5500 || 0;
+                const internet3300 = record.internet3300 || 0;
+                const internet2200 = record.internet2200 || 0;
+                const internet1100 = record.internet1100 || 0;
+                const giga = record.giga || 0; // 기존 데이터 호환
+                
+                const internetIncentive = 
+                    internet6600 * 18400 + 
+                    internet5500 * 20000 + 
+                    internet3300 * 23200 + 
+                    internet2200 * 24800 + 
+                    internet1100 * 26400 +
+                    giga * 20000; // 기존 데이터 호환
+                
+                const totalInternet = internet6600 + internet5500 + internet3300 + internet2200 + internet1100 + giga;
+                
+                // TV 업셀 계산
+                const tv = record.tv || 0;
+                const tvIncentive = tv * 4000;
+                const total = internetIncentive + tvIncentive;
+
+                let details = '';
+                
+                // 인터넷 상세 내역 (건수가 있는 것만 표시)
+                if (internet6600 > 0) details += `<div class="details"><span class="item-name">인터넷 6,600</span><span class="item-value">${internet6600}건 / ${formatCurrency(internet6600 * 18400)}</span></div>`;
+                if (internet5500 > 0) details += `<div class="details"><span class="item-name">인터넷 5,500</span><span class="item-value">${internet5500}건 / ${formatCurrency(internet5500 * 20000)}</span></div>`;
+                if (internet3300 > 0) details += `<div class="details"><span class="item-name">인터넷 3,300</span><span class="item-value">${internet3300}건 / ${formatCurrency(internet3300 * 23200)}</span></div>`;
+                if (internet2200 > 0) details += `<div class="details"><span class="item-name">인터넷 2,200</span><span class="item-value">${internet2200}건 / ${formatCurrency(internet2200 * 24800)}</span></div>`;
+                if (internet1100 > 0) details += `<div class="details"><span class="item-name">인터넷 1,100</span><span class="item-value">${internet1100}건 / ${formatCurrency(internet1100 * 26400)}</span></div>`;
+                if (giga > 0) details += `<div class="details"><span class="item-name">기가 업셀</span><span class="item-value">${giga}건 / ${formatCurrency(giga * 20000)}</span></div>`;
+                if (tv > 0) details += `<div class="details"><span class="item-name">TV 업셀</span><span class="item-value">${tv}건 / ${formatCurrency(tvIncentive)}</span></div>`;
 
                 return `
                     <div class="history-item" style="animation-delay: ${index * 0.05}s" onclick="celebrateClick()">
                         <button class="delete-btn" onclick="event.stopPropagation(); openConfirmDialog('${record.date}')">×</button>
                         <div class="date">${record.date}</div>
-                        <div class="details">
-                            <span class="item-name">기가 업셀</span>
-                            <span class="item-value">${record.giga}건 / ${formatCurrency(gigaIncentive)}</span>
-                        </div>
-                        <div class="details">
-                            <span class="item-name">TV 업셀</span>
-                            <span class="item-value">${record.tv}건 / ${formatCurrency(tvIncentive)}</span>
-                        </div>
+                        ${details}
                         <div class="total">합계: ${formatCurrency(total)}</div>
                     </div>
                 `;
@@ -1634,7 +1708,11 @@
         // 실적 추가
         async function addRecord() {
             const date = document.getElementById('dateInput').value;
-            const giga = parseInt(document.getElementById('gigaInput').value) || 0;
+            const internet6600 = parseInt(document.getElementById('internet6600Input').value) || 0;
+            const internet5500 = parseInt(document.getElementById('internet5500Input').value) || 0;
+            const internet3300 = parseInt(document.getElementById('internet3300Input').value) || 0;
+            const internet2200 = parseInt(document.getElementById('internet2200Input').value) || 0;
+            const internet1100 = parseInt(document.getElementById('internet1100Input').value) || 0;
             const tv = parseInt(document.getElementById('tvInput').value) || 0;
 
             if (!date) {
@@ -1642,7 +1720,8 @@
                 return;
             }
 
-            if (giga === 0 && tv === 0) {
+            if (internet6600 === 0 && internet5500 === 0 && internet3300 === 0 && 
+                internet2200 === 0 && internet1100 === 0 && tv === 0) {
                 showToast('실적을 입력해주세요! 📝', 'warning');
                 return;
             }
@@ -1656,12 +1735,24 @@
                 
                 if (existingIndex !== -1) {
                     // 기존 기록 업데이트
-                    records[existingIndex].giga += giga;
-                    records[existingIndex].tv += tv;
+                    records[existingIndex].internet6600 = (records[existingIndex].internet6600 || 0) + internet6600;
+                    records[existingIndex].internet5500 = (records[existingIndex].internet5500 || 0) + internet5500;
+                    records[existingIndex].internet3300 = (records[existingIndex].internet3300 || 0) + internet3300;
+                    records[existingIndex].internet2200 = (records[existingIndex].internet2200 || 0) + internet2200;
+                    records[existingIndex].internet1100 = (records[existingIndex].internet1100 || 0) + internet1100;
+                    records[existingIndex].tv = (records[existingIndex].tv || 0) + tv;
                     showToast('실적이 업데이트되었습니다! 🎉', 'success');
                 } else {
                     // 새 기록 추가
-                    records.push({ date, giga, tv });
+                    records.push({ 
+                        date, 
+                        internet6600, 
+                        internet5500, 
+                        internet3300, 
+                        internet2200, 
+                        internet1100, 
+                        tv 
+                    });
                     showToast('실적이 저장되었습니다! 🎉', 'success');
                 }
 
@@ -1696,35 +1787,35 @@
 
         // 입력 초기화
         function resetInputs() {
-            document.getElementById('gigaInput').value = '0';
+            document.getElementById('internet6600Input').value = '0';
+            document.getElementById('internet5500Input').value = '0';
+            document.getElementById('internet3300Input').value = '0';
+            document.getElementById('internet2200Input').value = '0';
+            document.getElementById('internet1100Input').value = '0';
             document.getElementById('tvInput').value = '0';
             document.getElementById('dateInput').valueAsDate = new Date();
         }
 
         // 입력 필드에 이벤트 리스너 추가
-        document.getElementById('gigaInput').addEventListener('focus', function() {
-            this.select();
-        });
-
-        document.getElementById('tvInput').addEventListener('focus', function() {
-            this.select();
-        });
-
-        // 입력 시 실시간 피드백
-        document.getElementById('gigaInput').addEventListener('input', function() {
-            const value = parseInt(this.value) || 0;
-            if (value > 0) {
-                this.style.color = '#E65100';
-                this.style.fontWeight = '700';
-            }
-        });
-
-        document.getElementById('tvInput').addEventListener('input', function() {
-            const value = parseInt(this.value) || 0;
-            if (value > 0) {
-                this.style.color = '#E65100';
-                this.style.fontWeight = '700';
-            }
+        const inputIds = ['internet6600Input', 'internet5500Input', 'internet3300Input', 'internet2200Input', 'internet1100Input', 'tvInput'];
+        
+        inputIds.forEach(id => {
+            const input = document.getElementById(id);
+            
+            input.addEventListener('focus', function() {
+                this.select();
+            });
+            
+            input.addEventListener('input', function() {
+                const value = parseInt(this.value) || 0;
+                if (value > 0) {
+                    this.style.color = '#E65100';
+                    this.style.fontWeight = '700';
+                } else {
+                    this.style.color = '';
+                    this.style.fontWeight = '';
+                }
+            });
         });
 
         // 모달 외부 클릭 시 닫기
