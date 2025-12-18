@@ -1127,9 +1127,47 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyA89ZUSRGPxXiLetuKpBjvhLZ_EbabzQD0",
+            authDomain: "honey-jina.firebaseapp.com",
+            databaseURL: "https://honey-jina-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "honey-jina",
+            storageBucket: "honey-jina.firebasestorage.app",
+            messagingSenderId: "453703035842",
+            appId: "1:453703035842:web:68ab1a1531b6345b79c45b",
+            measurementId: "G-ZRS7Y9YGN5"
+        };
+
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const recordsRef = ref(database, 'sales_records');
+
+        // 전역 함수로 노출
+        window.firebaseDB = {
+            database,
+            recordsRef,
+            ref,
+            set,
+            get,
+            remove,
+            onValue
+        };
+
+        // Firebase 데이터 로드 완료 후 초기화
+        loadFirebaseData();
+    </script>
+
     <script>
-        // 로컬 스토리지 키
+        // 로컬 스토리지 키 (Firebase 마이그레이션용)
         const STORAGE_KEY = 'jina_sales_records';
+        const MIGRATED_KEY = 'firebase_migrated';
         
         // 현재 선택된 연월
         let currentYear = new Date().getFullYear();
@@ -1137,9 +1175,73 @@
         
         // 삭제할 날짜 임시 저장
         let deleteTarget = null;
+        
+        // 전역 데이터 캐시
+        let cachedRecords = [];
+        let isLoading = false;
 
         // 오늘 날짜 설정
         document.getElementById('dateInput').valueAsDate = new Date();
+
+        // Firebase에서 데이터 로드
+        async function loadFirebaseData() {
+            isLoading = true;
+            try {
+                const snapshot = await window.firebaseDB.get(window.firebaseDB.recordsRef);
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    cachedRecords = Object.values(data);
+                } else {
+                    // 로컬스토리지에서 마이그레이션
+                    await migrateFromLocalStorage();
+                }
+                
+                // 실시간 동기화 시작
+                startRealtimeSync();
+                
+                // UI 업데이트
+                updateMonthDisplay();
+                updateDashboard(false);
+                displayHistory();
+            } catch (error) {
+                console.error('Firebase 로드 오류:', error);
+                showToast('데이터 로드 중 오류가 발생했습니다', 'error');
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // 로컬스토리지에서 Firebase로 마이그레이션
+        async function migrateFromLocalStorage() {
+            const migrated = localStorage.getItem(MIGRATED_KEY);
+            if (migrated) return;
+
+            const localData = localStorage.getItem(STORAGE_KEY);
+            if (localData) {
+                const records = JSON.parse(localData);
+                if (records.length > 0) {
+                    await saveData(records);
+                    localStorage.setItem(MIGRATED_KEY, 'true');
+                    showToast('기존 데이터를 클라우드로 이동했습니다! ☁️', 'success');
+                }
+            }
+        }
+
+        // 실시간 동기화
+        function startRealtimeSync() {
+            window.firebaseDB.onValue(window.firebaseDB.recordsRef, (snapshot) => {
+                if (!isLoading) {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        cachedRecords = Object.values(data);
+                    } else {
+                        cachedRecords = [];
+                    }
+                    updateDashboard(false);
+                    displayHistory();
+                }
+            });
+        }
 
         // 현재 월 표시 업데이트
         function updateMonthDisplay() {
@@ -1164,9 +1266,8 @@
 
         // 현재 월 기준으로 필터링된 데이터 가져오기
         function getCurrentMonthData() {
-            const records = loadData();
             const monthStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
-            return records.filter(record => record.date.startsWith(monthStr));
+            return cachedRecords.filter(record => record.date.startsWith(monthStr));
         }
 
         // 달력 열기
@@ -1235,7 +1336,7 @@
         // 확인 다이얼로그 열기
         function openConfirmDialog(date) {
             deleteTarget = date;
-            const record = loadData().find(r => r.date === date);
+            const record = cachedRecords.find(r => r.date === date);
             if (record) {
                 document.getElementById('confirmMessage').textContent = 
                     `${date} 실적을 삭제하시겠습니까?\n(기가 ${record.giga}건, TV ${record.tv}건)`;
@@ -1250,23 +1351,27 @@
         }
 
         // 삭제 확인
-        function confirmDelete() {
+        async function confirmDelete() {
             if (deleteTarget) {
-                deleteRecord(deleteTarget);
+                await deleteRecord(deleteTarget);
                 closeConfirmDialog();
             }
         }
 
-        // 실적 삭제
-        function deleteRecord(date) {
-            let records = loadData();
-            records = records.filter(r => r.date !== date);
-            saveData(records);
-            
-            updateDashboard(true);
-            displayHistory();
-            
-            showToast('실적이 삭제되었습니다 🗑️', 'success');
+        // 실적 삭제 (Firebase)
+        async function deleteRecord(date) {
+            try {
+                isLoading = true;
+                const newRecords = cachedRecords.filter(r => r.date !== date);
+                await saveData(newRecords);
+                
+                showToast('실적이 삭제되었습니다 🗑️', 'success');
+            } catch (error) {
+                console.error('삭제 오류:', error);
+                showToast('삭제 중 오류가 발생했습니다', 'error');
+            } finally {
+                isLoading = false;
+            }
         }
 
         // 파티클 효과 생성
@@ -1342,15 +1447,27 @@
             }, 3000);
         }
 
-        // 데이터 로드
+        // 데이터 로드 (캐시에서)
         function loadData() {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
+            return cachedRecords;
         }
 
-        // 데이터 저장
-        function saveData(records) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        // 데이터 저장 (Firebase)
+        async function saveData(records) {
+            try {
+                // 날짜를 키로 사용하여 저장
+                const dataObject = {};
+                records.forEach(record => {
+                    const key = record.date.replace(/-/g, '');
+                    dataObject[key] = record;
+                });
+                
+                await window.firebaseDB.set(window.firebaseDB.recordsRef, dataObject);
+                cachedRecords = records;
+            } catch (error) {
+                console.error('Firebase 저장 오류:', error);
+                throw error;
+            }
         }
 
         // 금액 포맷팅
@@ -1448,7 +1565,7 @@
         }
 
         // 실적 추가
-        function addRecord() {
+        async function addRecord() {
             const date = document.getElementById('dateInput').value;
             const giga = parseInt(document.getElementById('gigaInput').value) || 0;
             const tv = parseInt(document.getElementById('tvInput').value) || 0;
@@ -1463,41 +1580,47 @@
                 return;
             }
 
-            const records = loadData();
-            
-            // 같은 날짜 기록이 있는지 확인
-            const existingIndex = records.findIndex(r => r.date === date);
-            
-            if (existingIndex !== -1) {
-                // 기존 기록 업데이트
-                records[existingIndex].giga += giga;
-                records[existingIndex].tv += tv;
-                showToast('실적이 업데이트되었습니다! 🎉', 'success');
-            } else {
-                // 새 기록 추가
-                records.push({ date, giga, tv });
-                showToast('실적이 저장되었습니다! 🎉', 'success');
-            }
+            try {
+                isLoading = true;
+                const records = [...cachedRecords];
+                
+                // 같은 날짜 기록이 있는지 확인
+                const existingIndex = records.findIndex(r => r.date === date);
+                
+                if (existingIndex !== -1) {
+                    // 기존 기록 업데이트
+                    records[existingIndex].giga += giga;
+                    records[existingIndex].tv += tv;
+                    showToast('실적이 업데이트되었습니다! 🎉', 'success');
+                } else {
+                    // 새 기록 추가
+                    records.push({ date, giga, tv });
+                    showToast('실적이 저장되었습니다! 🎉', 'success');
+                }
 
-            saveData(records);
-            
-            // 입력한 날짜의 월로 자동 이동
-            const inputDate = new Date(date);
-            currentYear = inputDate.getFullYear();
-            currentMonth = inputDate.getMonth() + 1;
-            updateMonthDisplay();
-            
-            updateDashboard(true); // 애니메이션 활성화
-            displayHistory();
-            resetInputs();
-            
-            // 축하 파티클 효과
-            createRandomParticles(20, ['💰', '🎊', '🎉', '✨', '🌟', '💛', '🍯']);
-            
-            // 귀여운 메시지 오버레이 표시
-            setTimeout(() => {
-                showCuteMessage();
-            }, 500);
+                await saveData(records);
+                
+                // 입력한 날짜의 월로 자동 이동
+                const inputDate = new Date(date);
+                currentYear = inputDate.getFullYear();
+                currentMonth = inputDate.getMonth() + 1;
+                updateMonthDisplay();
+                
+                resetInputs();
+                
+                // 축하 파티클 효과
+                createRandomParticles(20, ['💰', '🎊', '🎉', '✨', '🌟', '💛', '🍯']);
+                
+                // 귀여운 메시지 오버레이 표시
+                setTimeout(() => {
+                    showCuteMessage();
+                }, 500);
+            } catch (error) {
+                console.error('저장 오류:', error);
+                showToast('저장 중 오류가 발생했습니다', 'error');
+            } finally {
+                isLoading = false;
+            }
         }
 
         // 입력 초기화
@@ -1545,11 +1668,6 @@
                 closeConfirmDialog();
             }
         });
-
-        // 초기 로드
-        updateMonthDisplay();
-        updateDashboard(false);
-        displayHistory();
 
         // 웰컴 파티클 효과
         window.addEventListener('load', () => {
