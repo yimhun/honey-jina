@@ -2,46 +2,48 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>지나의 꿀단지 🍯</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&family=Gaegu:wght@300;400;700&family=Single+Day&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #FFF9E6 0%, #FFE5B4 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FFE5B4 0%, #FFD700 100%);
             min-height: 100vh;
-            padding-bottom: 30px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header {
-            background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
-            color: white;
-            padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            margin-bottom: 30px;
         }
 
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header .emoji {
-            font-size: 36px;
-            display: inline-block;
+        .logo {
+            font-size: 80px;
+            margin-bottom: 10px;
             animation: bounce 2s infinite;
         }
 
@@ -50,1608 +52,253 @@
             50% { transform: translateY(-10px); }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1) rotate(180deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* 파티클 효과 */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .particle {
-            position: absolute;
-            font-size: 24px;
-            animation: particleFall 3s ease-in forwards;
-            opacity: 0;
-        }
-
-        @keyframes particleFall {
-            0% {
-                opacity: 1;
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-200px) rotate(360deg);
-            }
-        }
-
-        /* 반짝이는 별 효과 */
-        .sparkle-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .sparkle {
-            position: absolute;
-            color: #FFD700;
-            font-size: 12px;
-            animation: sparkle 1.5s infinite;
-            pointer-events: none;
-        }
-
-        .sparkle:nth-child(1) { top: -5px; left: -5px; animation-delay: 0s; }
-        .sparkle:nth-child(2) { top: -5px; right: -5px; animation-delay: 0.3s; }
-        .sparkle:nth-child(3) { bottom: -5px; left: -5px; animation-delay: 0.6s; }
-        .sparkle:nth-child(4) { bottom: -5px; right: -5px; animation-delay: 0.9s; }
-
-        .dashboard {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            animation: slideInUp 0.5s ease-out;
-        }
-
-        .dashboard h2 {
-            color: #FF8C00;
-            font-size: 22px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .total-incentive {
-            background: linear-gradient(135deg, #FFD93D 0%, #FFC107 100%);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .total-incentive:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.5);
-        }
-
-        .total-incentive:active {
-            transform: scale(0.98);
-        }
-
-        .total-incentive .label {
-            font-size: 14px;
-            color: #6B4E00;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .total-incentive .amount {
+        h1 {
+            font-family: 'Single Day', cursive;
             font-size: 36px;
-            font-weight: 800;
             color: #6B4E00;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+            margin-bottom: 5px;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+        .subtitle {
+            font-size: 16px;
+            color: #8B6F00;
+            font-weight: 500;
         }
 
-        .stat-card {
-            background: #FFF8E1;
-            border-radius: 12px;
-            padding: 15px;
-            border: 2px solid #FFE082;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            animation: slideInUp 0.6s ease-out;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px) rotate(1deg);
-            box-shadow: 0 8px 16px rgba(255, 193, 7, 0.3);
-            border-color: #FFC107;
-            background: #FFF9C4;
-        }
-
-        .stat-card:active {
-            transform: scale(0.95);
-        }
-
-        .stat-card .stat-label {
-            font-size: 13px;
-            color: #F57C00;
-            margin-bottom: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover .stat-label {
-            color: #E65100;
-        }
-
-        .stat-card .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #E65100;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover .stat-value {
-            transform: scale(1.1);
-            color: #FF6F00;
-        }
-
-        .stat-card .stat-sub {
-            font-size: 12px;
-            color: #FF8C00;
-            margin-top: 5px;
-        }
-
-        .input-section {
+        .preview-card {
             background: white;
             border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-            animation: slideInUp 0.7s ease-out;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        .input-section h2 {
+        .preview-title {
+            font-size: 18px;
             color: #FF8C00;
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-weight: 700;
             text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .preview-amounts {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .amount-box {
+            background: linear-gradient(135deg, #FFD93D 0%, #FFC107 100%);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .amount-box.funding {
+            background: linear-gradient(135deg, #EF5350 0%, #E53935 100%);
+        }
+
+        .amount-box.funding .amount-label,
+        .amount-box.funding .amount-value {
+            color: white;
+        }
+
+        .amount-label {
+            font-size: 13px;
+            color: #6B4E00;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .amount-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: #6B4E00;
+        }
+
+        .branch-summary {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 15px;
+            border-top: 2px dashed #FFE082;
+        }
+
+        .branch-item {
+            text-align: center;
+        }
+
+        .branch-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .branch-amount {
+            font-size: 18px;
             font-weight: 700;
         }
 
-        .date-input {
-            margin-bottom: 20px;
-        }
-
-        .date-input label {
-            display: block;
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .date-input input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #FFE082;
-            border-radius: 10px;
-            font-size: 16px;
-            background: #FFF8E1;
-            color: #333;
-            transition: all 0.3s ease;
-        }
-
-        .date-input input:focus {
-            outline: none;
-            border-color: #FFC107;
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
-            transform: scale(1.02);
-        }
-
-        .input-group {
-            background: #FFF8E1;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #FFE082;
-            transition: all 0.3s ease;
-        }
-
-        .input-group:hover {
-            border-color: #FFC107;
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.2);
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 15px;
-            color: #F57C00;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .input-group .incentive-info {
-            font-size: 12px;
+        .branch-amount.gyeyang {
             color: #FF8C00;
-            margin-bottom: 8px;
         }
 
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #FFD54F;
-            border-radius: 8px;
-            font-size: 18px;
-            text-align: center;
-            font-weight: 600;
-            background: white;
-            transition: all 0.3s ease;
+        .branch-amount.yeonsu {
+            color: #E91E63;
         }
 
-        .input-group input:focus {
-            outline: none;
-            border-color: #FFC107;
-            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
-            transform: scale(1.05);
-        }
-
-        .input-group input:hover {
-            border-color: #FFB300;
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .btn {
             width: 100%;
-            padding: 16px;
+            padding: 20px;
             border: none;
-            border-radius: 12px;
-            font-size: 18px;
+            border-radius: 20px;
+            font-size: 20px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(255, 167, 38, 0.5);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        .btn-secondary {
-            background: white;
-            color: #FF8C00;
-            border: 2px solid #FFE082;
-        }
-
-        .btn-secondary:hover {
-            background: #FFF8E1;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 193, 7, 0.3);
-        }
-
-        .btn-secondary:active {
+        .btn:active {
             transform: scale(0.98);
         }
 
-        .history {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            animation: slideInUp 0.8s ease-out;
-        }
-
-        .history h2 {
-            color: #FF8C00;
-            font-size: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .history-item {
-            background: #FFF8E1;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-left: 4px solid #FFC107;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            animation: slideInUp 0.4s ease-out;
-        }
-
-        .history-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-            border-left-width: 6px;
-            background: #FFF9C4;
-        }
-
-        .history-item .date {
-            font-size: 13px;
-            color: #F57C00;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .history-item .details {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .history-item .item-name {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .history-item .item-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: #E65100;
-        }
-
-        .history-item .total {
-            font-size: 16px;
-            font-weight: 700;
-            color: #FF8C00;
-            text-align: right;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 2px solid #FFE082;
-        }
-
-        .no-data {
-            text-align: center;
-            color: #999;
-            padding: 30px;
-            font-size: 14px;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        .btn-total {
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
             color: white;
-            padding: 15px 25px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            font-weight: 600;
-            font-size: 16px;
         }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
+        .btn-gyeyang {
+            background: linear-gradient(135deg, #FFB84D 0%, #FFA726 100%);
+            color: #6B4E00;
         }
 
-        .toast.success {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-        }
-
-        .toast.warning {
-            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-        }
-
-        .toast.error {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-        }
-
-        /* 귀여운 메시지 오버레이 */
-        .cute-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .cute-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .cute-message {
-            background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F5 50%, #FFE5F0 100%);
-            border: 5px solid #FFB6C1;
-            border-radius: 30px;
-            padding: 50px 60px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4);
-            transform: scale(0.5) rotate(-10deg);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cute-overlay.show .cute-message {
-            transform: scale(1) rotate(0deg);
-        }
-
-        .cute-message::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .cute-message-text {
-            font-family: 'Single Day', cursive;
-            font-size: 48px;
-            color: #FF69B4;
-            text-align: center;
-            text-shadow: 
-                3px 3px 0px #FFF,
-                -1px -1px 0px #FFF,
-                1px -1px 0px #FFF,
-                -1px 1px 0px #FFF,
-                4px 4px 10px rgba(255, 105, 180, 0.5);
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1;
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .cute-hearts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .cute-heart {
-            position: absolute;
-            font-size: 30px;
-            animation: floatHeart 3s ease-in-out infinite;
-            opacity: 0.7;
-        }
-
-        .cute-heart:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .cute-heart:nth-child(2) { top: 20%; right: 10%; animation-delay: 0.5s; }
-        .cute-heart:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 1s; }
-        .cute-heart:nth-child(4) { bottom: 10%; right: 15%; animation-delay: 1.5s; }
-        .cute-heart:nth-child(5) { top: 50%; left: 5%; animation-delay: 2s; }
-        .cute-heart:nth-child(6) { top: 50%; right: 5%; animation-delay: 2.5s; }
-
-        @keyframes floatHeart {
-            0%, 100% { transform: translateY(0) scale(1); }
-            25% { transform: translateY(-15px) scale(1.1); }
-            50% { transform: translateY(0) scale(1); }
-            75% { transform: translateY(-10px) scale(1.05); }
-        }
-
-        /* 월별 필터 */
-        .month-filter {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            animation: slideInUp 0.4s ease-out;
-        }
-
-        .month-filter h3 {
-            color: #FF8C00;
-            font-size: 18px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        .month-selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .month-btn {
-            background: #FFF8E1;
-            border: 2px solid #FFE082;
-            border-radius: 10px;
-            padding: 10px 15px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #F57C00;
-            font-weight: 600;
-        }
-
-        .month-btn:hover {
-            background: #FFC107;
+        .btn-yeonsu {
+            background: linear-gradient(135deg, #FF6B9D 0%, #F06292 100%);
             color: white;
-            transform: scale(1.1);
         }
 
-        .month-btn:active {
-            transform: scale(0.95);
+        .btn-icon {
+            font-size: 28px;
         }
 
-        .current-month {
-            font-size: 20px;
-            font-weight: 700;
-            color: #E65100;
-            min-width: 120px;
-            text-align: center;
-        }
-
-        /* 달력 뷰 모달 */
-        .calendar-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            padding: 10px;
-        }
-
-        .calendar-modal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .calendar-content {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .calendar-modal.show .calendar-content {
-            transform: scale(1);
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .calendar-header h3 {
-            color: #FF8C00;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .close-calendar {
-            background: #FFE082;
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 22px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .close-calendar:hover {
-            background: #FFC107;
-            transform: rotate(90deg);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .calendar-day-header {
-            text-align: center;
-            font-weight: 700;
-            color: #F57C00;
-            padding: 8px 2px;
-            font-size: 13px;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            border-radius: 10px;
+        .btn-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #F5F5F5;
-            color: #999;
-            padding: 4px;
-            min-height: 0;
         }
 
-        .calendar-day.current-month {
-            background: #FFF8E1;
-            color: #333;
+        .btn-title {
+            font-size: 22px;
+            margin-bottom: 3px;
         }
 
-        .calendar-day.has-data {
-            background: linear-gradient(135deg, #FFD93D 0%, #FFC107 100%);
-            color: white;
-            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
-        }
-
-        .calendar-day.today {
-            border: 2px solid #FF8C00;
-        }
-
-        .calendar-day:hover {
-            transform: scale(1.05);
-            z-index: 1;
-        }
-
-        .calendar-day-number {
+        .btn-subtitle {
             font-size: 14px;
-            margin-bottom: 2px;
-        }
-
-        .calendar-day-count {
-            font-size: 9px;
             opacity: 0.9;
         }
 
-        /* 히스토리 아이템 삭제 버튼 */
-        .history-item {
-            position: relative;
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
-        }
-
-        .history-item:hover .delete-btn {
-            opacity: 1;
-        }
-
-        .delete-btn:hover {
-            background: #ff5252;
-            transform: scale(1.2) rotate(90deg);
-        }
-
-        .delete-btn:active {
-            transform: scale(0.9);
-        }
-
-        /* 확인 다이얼로그 */
-        .confirm-dialog {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10001;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .confirm-dialog.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .confirm-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .confirm-dialog.show .confirm-content {
-            transform: scale(1);
-        }
-
-        .confirm-content h3 {
-            color: #FF8C00;
-            font-size: 20px;
-            margin-bottom: 15px;
+        .loading {
             text-align: center;
-        }
-
-        .confirm-content p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 25px;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        .confirm-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .confirm-buttons button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-confirm {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .btn-confirm:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
-        }
-
-        .btn-cancel {
-            background: #E0E0E0;
-            color: #666;
-        }
-
-        .btn-cancel:hover {
-            background: #BDBDBD;
-            transform: translateY(-2px);
-        }
-
-        .view-calendar-btn {
-            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 14px 20px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
-            margin-top: 15px;
-            width: 100%;
-        }
-
-        .view-calendar-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(156, 39, 176, 0.5);
-        }
-
-        .view-calendar-btn:active {
-            transform: translateY(0);
-        }
-
-        /* 진행바 */
-        .progress-container {
-            margin-top: 10px;
-        }
-
-        .progress-bar-bg {
-            background: #E0E0E0;
-            border-radius: 10px;
-            height: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar-fill {
-            background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill.complete {
-            background: linear-gradient(90deg, #FFD700 0%, #FFA726 100%);
-            animation: shimmerProgress 2s infinite;
-        }
-
-        @keyframes shimmerProgress {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #666;
-            margin-top: 4px;
-        }
-
-        .current-rate {
-            font-size: 12px;
-            color: #4CAF50;
-            font-weight: 700;
-            margin-top: 5px;
-        }
-
-        .next-goal {
-            font-size: 11px;
-            color: #FF9800;
-            margin-top: 3px;
-        }
-
-        /* 인센티브 분할 표시 */
-        .incentive-split {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .incentive-box {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            border: 2px solid #FFE082;
-        }
-
-        .incentive-box .label {
-            font-size: 12px;
-            color: #F57C00;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .incentive-box .amount {
-            font-size: 22px;
-            font-weight: 700;
-            color: #E65100;
-        }
-
-        /* 수수료 구성 카드 */
-        .fee-breakdown {
-            background: #FFF8E1;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 2px solid #FFE082;
-        }
-
-        .fee-breakdown h3 {
-            color: #FF8C00;
-            font-size: 16px;
-            margin-bottom: 12px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .fee-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #FFE082;
-        }
-
-        .fee-item:last-child {
-            border-bottom: none;
-        }
-
-        .fee-item .label {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .fee-item .value {
-            font-size: 14px;
-            font-weight: 700;
-            color: #E65100;
-        }
-
-        /* 상품별 카드 */
-        .product-card {
-            background: #FFF8E1;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-left: 4px solid #FFC107;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-        }
-
-        .product-card .product-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: #F57C00;
-            margin-bottom: 8px;
-        }
-
-        .product-card .product-stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
-            font-weight: 700;
-            color: #E65100;
-            margin-bottom: 5px;
-        }
-
-        .product-card .product-count {
-            color: #FF8C00;
-        }
-
-        /* 수수료표 모달 */
-        .fee-table-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10002;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            padding: 20px;
-        }
-
-        .fee-table-modal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .fee-table-content {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .fee-table-modal.show .fee-table-content {
-            transform: scale(1);
-        }
-
-        .fee-table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .fee-table-header h3 {
-            color: #FF8C00;
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        .close-fee-table {
-            background: #FFE082;
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 22px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .close-fee-table:hover {
-            background: #FFC107;
-            transform: rotate(90deg);
-        }
-
-        .fee-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 13px;
-        }
-
-        .fee-table th {
-            background: linear-gradient(135deg, #FFD93D 0%, #FFC107 100%);
             color: #6B4E00;
-            padding: 10px 8px;
-            text-align: center;
-            font-weight: 700;
-            border: 1px solid #FFE082;
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0.7;
         }
 
-        .fee-table td {
-            padding: 10px 8px;
-            text-align: center;
-            border: 1px solid #FFE082;
-            background: white;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .fee-table tr:nth-child(even) td {
-            background: #FFF8E1;
-        }
-
-        .fee-table .product-name {
-            font-weight: 700;
-            color: #F57C00;
-        }
-
-        .fee-table .highlight {
-            background: #FFE082 !important;
-            font-weight: 700;
-            color: #E65100;
-        }
-
-        .fee-note {
-            background: #FFF8E1;
-            border-left: 4px solid #FFC107;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.6;
-            color: #666;
-        }
-
-        .fee-note strong {
-            color: #F57C00;
-        }
-
-        .view-fee-table-btn {
-            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 12px 20px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .view-fee-table-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 152, 0, 0.5);
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .total-incentive .amount {
-                font-size: 30px;
-            }
-
-            .incentive-box .amount {
-                font-size: 18px;
-            }
-
-            .product-card {
-                padding: 12px;
-            }
-
-            .product-card .product-stats {
-                font-size: 16px;
-            }
-
-            .fee-table {
-                font-size: 11px;
-            }
-
-            .fee-table th, .fee-table td {
-                padding: 6px 4px;
-            }
-
-            .fee-table-content {
-                padding: 15px;
-            }
-
-            .cute-message {
-                padding: 40px 30px;
-                border-width: 4px;
-            }
-
-            .cute-message-text {
-                font-size: 36px;
-            }
-
-            .cute-heart {
-                font-size: 20px;
-            }
-
-            .calendar-modal {
-                padding: 5px;
-            }
-
-            .calendar-content {
-                padding: 15px;
-                max-height: 90vh;
-                border-radius: 15px;
-            }
-
-            .calendar-header {
-                margin-bottom: 12px;
-            }
-
-            .calendar-header h3 {
-                font-size: 18px;
-            }
-
-            .close-calendar {
-                width: 32px;
-                height: 32px;
-                font-size: 20px;
-            }
-
-            .calendar-grid {
-                gap: 3px;
-            }
-
-            .calendar-day-header {
-                font-size: 11px;
-                padding: 6px 2px;
-            }
-
-            .calendar-day {
-                font-size: 11px;
-                border-radius: 8px;
-                padding: 2px;
-            }
-
-            .calendar-day-number {
-                font-size: 13px;
-            }
-
-            .calendar-day-count {
-                font-size: 8px;
-            }
-
-            .calendar-day.today {
-                border-width: 2px;
-            }
-
-            .month-selector {
-                gap: 10px;
-            }
-
-            .current-month {
-                font-size: 18px;
-                min-width: 100px;
-            }
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
         }
     </style>
 </head>
 <body>
-    <!-- 파티클 효과 컨테이너 -->
-    <div class="particles" id="particles"></div>
-
-    <!-- 귀여운 메시지 오버레이 -->
-    <div class="cute-overlay" id="cuteOverlay">
-        <div class="cute-message">
-            <div class="cute-hearts">
-                <div class="cute-heart">💖</div>
-                <div class="cute-heart">💕</div>
-                <div class="cute-heart">💗</div>
-                <div class="cute-heart">💝</div>
-                <div class="cute-heart">💓</div>
-                <div class="cute-heart">💞</div>
-            </div>
-            <div class="cute-message-text">오늘도 수고하셨어용♡</div>
-        </div>
-    </div>
-
-    <div class="header">
-        <div class="emoji">🍯</div>
-        <h1>지나의 꿀단지</h1>
-    </div>
-
     <div class="container">
-        <!-- 월별 필터 -->
-        <div class="month-filter">
-            <h3>📅 실적 조회 월</h3>
-            <div class="month-selector">
-                <button class="month-btn" onclick="changeMonth(-1)">◀</button>
-                <div class="current-month" id="currentMonth"></div>
-                <button class="month-btn" onclick="changeMonth(1)">▶</button>
+        <div class="header">
+            <div class="logo">🍯</div>
+            <h1>지나의 꿀단지</h1>
+            <p class="subtitle">나의 달콤한 실적 관리</p>
+        </div>
+
+        <div class="preview-card">
+            <div class="preview-title">💰 이번 달 전체 수익 미리보기</div>
+            <div class="preview-amounts">
+                <div class="amount-box">
+                    <div class="amount-label">100% 지급액</div>
+                    <div class="amount-value" id="total100">0원</div>
+                </div>
+                <div class="amount-box">
+                    <div class="amount-label">80% 지급액</div>
+                    <div class="amount-value" id="total80">0원</div>
+                </div>
+                <div class="amount-box funding">
+                    <div class="amount-label">펀딩 금액</div>
+                    <div class="amount-value" id="totalFunding">0원</div>
+                </div>
+            </div>
+            <div class="branch-summary">
+                <div class="branch-item">
+                    <div class="branch-label">계양</div>
+                    <div class="branch-amount gyeyang" id="gyeyangTotal">0원</div>
+                </div>
+                <div class="branch-item">
+                    <div class="branch-label">연수</div>
+                    <div class="branch-amount yeonsu" id="yeonsuTotal">0원</div>
+                </div>
             </div>
         </div>
 
-        <!-- 대시보드 -->
-        <div class="dashboard">
-            <h2>💰 내 실적 현황</h2>
-            <div class="total-incentive" onclick="celebrateClick()">
-                <div class="label">누적 인센티브</div>
-                <div class="incentive-split">
-                    <div class="incentive-box">
-                        <div class="label">100% 지급액</div>
-                        <div class="amount" id="totalIncentive100">0원</div>
-                    </div>
-                    <div class="incentive-box">
-                        <div class="label">80% 지급액</div>
-                        <div class="amount" id="totalIncentive80">0원</div>
-                    </div>
+        <div class="buttons-container">
+            <a href="total.html" class="btn btn-total">
+                <span class="btn-icon">🍯</span>
+                <div class="btn-content">
+                    <div class="btn-title">전체 꿀통</div>
+                    <div class="btn-subtitle">계양+연수 전체보기</div>
                 </div>
-            </div>
+            </a>
 
-            <!-- 수수료 구성 -->
-            <div class="fee-breakdown">
-                <h3>📊 수수료 구성</h3>
-                <div class="fee-item">
-                    <span class="label">기본 수수료</span>
-                    <span class="value" id="basicFeeTotal">0원</span>
+            <a href="gyeyang.html" class="btn btn-gyeyang">
+                <span class="btn-icon">🟡</span>
+                <div class="btn-content">
+                    <div class="btn-title">계양 꿀통</div>
+                    <div class="btn-subtitle">계양지점 실적관리</div>
                 </div>
-                <div class="fee-item">
-                    <span class="label">그레이드 수수료</span>
-                    <span class="value" id="gradeFeeTotal">0원</span>
-                </div>
-            </div>
+            </a>
 
-            <!-- 인터넷 업셀 실적 -->
-            <h3 style="color: #FF8C00; font-size: 18px; margin-bottom: 12px; font-weight: 700;">🌐 인터넷 업셀 실적</h3>
-            
-            <div class="product-card" id="case1Card">
-                <div class="product-name">100M → 500M</div>
-                <div class="product-stats">
-                    <span class="product-count" id="case1Count">0건</span>
-                    <span id="case1Amount">0원</span>
+            <a href="yeonsu.html" class="btn btn-yeonsu">
+                <span class="btn-icon">💖</span>
+                <div class="btn-content">
+                    <div class="btn-title">연수 꿀통</div>
+                    <div class="btn-subtitle">연수지점 실적관리</div>
                 </div>
-                <div class="current-rate" id="case1Rate">⚡ 현재: 20,000원/건</div>
-                <div class="progress-container">
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="case1Progress" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-info">
-                        <span id="case1ProgressText">0/10건</span>
-                        <span id="case1NextGoal"></span>
-                    </div>
-                </div>
-                <div class="next-goal" id="case1Next"></div>
-            </div>
-
-            <div class="product-card" id="case2Card">
-                <div class="product-name">500M → 1G</div>
-                <div class="product-stats">
-                    <span class="product-count" id="case2Count">0건</span>
-                    <span id="case2Amount">0원</span>
-                </div>
-                <div class="current-rate" id="case2Rate">⚡ 현재: 20,000원/건</div>
-                <div class="progress-container">
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="case2Progress" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-info">
-                        <span id="case2ProgressText">0/10건</span>
-                        <span id="case2NextGoal"></span>
-                    </div>
-                </div>
-                <div class="next-goal" id="case2Next"></div>
-            </div>
-
-            <div class="product-card" id="case3Card">
-                <div class="product-name">100M → 1G</div>
-                <div class="product-stats">
-                    <span class="product-count" id="case3Count">0건</span>
-                    <span id="case3Amount">0원</span>
-                </div>
-                <div class="current-rate" id="case3Rate">⚡ 현재: 60,000원/건</div>
-                <div class="progress-container">
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="case3Progress" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-info">
-                        <span id="case3ProgressText">0/10건</span>
-                        <span id="case3NextGoal"></span>
-                    </div>
-                </div>
-                <div class="next-goal" id="case3Next"></div>
-            </div>
-
-            <!-- TV 업셀 -->
-            <h3 style="color: #FF8C00; font-size: 18px; margin: 20px 0 12px 0; font-weight: 700;">📺 TV 업셀</h3>
-            <div class="product-card" style="border-left-color: #9C27B0;">
-                <div class="product-stats">
-                    <span class="product-count" id="case4Count">0건</span>
-                    <span id="case4Amount">0원</span>
-                </div>
-                <div style="font-size: 12px; color: #999; margin-top: 5px;">그레이드 수수료 없음</div>
-            </div>
+            </a>
         </div>
 
-        <!-- 실적 입력 -->
-        <div class="input-section">
-            <h2>✨ 오늘의 실적 입력</h2>
-            <button class="view-fee-table-btn" onclick="openFeeTable()">📋 수수료표 보기</button>
-            <div class="date-input">
-                <label>날짜</label>
-                <input type="date" id="dateInput">
-            </div>
-            <div class="input-group">
-                <label>100M → 500M 업셀</label>
-                <div class="incentive-info">각 건마다: 기본 10,000 + 그레이드 (1-9건: 20,000 / 10-11건: 27,000 / 12건+: 35,000)</div>
-                <input type="number" id="case1Input" min="0" value="0" placeholder="건수 입력">
-            </div>
-            <div class="input-group">
-                <label>500M → 1G 업셀</label>
-                <div class="incentive-info">각 건마다: 기본 10,000 + 그레이드 (1-9건: 20,000 / 10-11건: 27,000 / 12건+: 35,000)</div>
-                <input type="number" id="case2Input" min="0" value="0" placeholder="건수 입력">
-            </div>
-            <div class="input-group">
-                <label>100M → 1G 업셀</label>
-                <div class="incentive-info">각 건마다: 기본 30,000 + 그레이드 (1-9건: 60,000 / 10-11건: 75,000 / 12건+: 90,000)</div>
-                <input type="number" id="case3Input" min="0" value="0" placeholder="건수 입력">
-            </div>
-            <div class="input-group">
-                <label>TV 업셀</label>
-                <div class="incentive-info">건당 10,000원 (기본+그레이드 구분 없음)</div>
-                <input type="number" id="case4Input" min="0" value="0" placeholder="건수 입력">
-            </div>
-            <button class="btn btn-primary" onclick="addRecord()">💾 저장하기</button>
-            <button class="btn btn-secondary" onclick="resetInputs()">🔄 입력 초기화</button>
-        </div>
-
-        <!-- 실적 기록 -->
-        <div class="history">
-            <h2>📊 실적 기록</h2>
-            <button class="view-calendar-btn" onclick="openCalendar()">📅 달력으로 보기</button>
-            <div id="historyList"></div>
+        <div class="loading" id="loading">
+            <span class="spinner">🍯</span> 데이터 불러오는 중...
         </div>
     </div>
 
-    <!-- 달력 뷰 모달 -->
-    <div class="calendar-modal" id="calendarModal">
-        <div class="calendar-content">
-            <div class="calendar-header">
-                <h3 id="calendarTitle"></h3>
-                <button class="close-calendar" onclick="closeCalendar()">×</button>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
-    </div>
-
-    <!-- 확인 다이얼로그 -->
-    <div class="confirm-dialog" id="confirmDialog">
-        <div class="confirm-content">
-            <h3>⚠️ 실적 삭제</h3>
-            <p id="confirmMessage"></p>
-            <div class="confirm-buttons">
-                <button class="btn-cancel" onclick="closeConfirmDialog()">취소</button>
-                <button class="btn-confirm" onclick="confirmDelete()">삭제</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 수수료표 모달 -->
-    <div class="fee-table-modal" id="feeTableModal">
-        <div class="fee-table-content">
-            <div class="fee-table-header">
-                <h3>📋 수수료표</h3>
-                <button class="close-fee-table" onclick="closeFeeTable()">×</button>
-            </div>
-            
-            <table class="fee-table">
-                <thead>
-                    <tr>
-                        <th rowspan="2">CASE</th>
-                        <th rowspan="2">구분</th>
-                        <th rowspan="2">기본<br>수수료</th>
-                        <th colspan="3">그레이드 수수료</th>
-                    </tr>
-                    <tr>
-                        <th>1-9건</th>
-                        <th>10-11건</th>
-                        <th>12건 이상</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="product-name">1번</td>
-                        <td class="product-name">100M→500M</td>
-                        <td class="highlight">10,000</td>
-                        <td class="highlight">20,000</td>
-                        <td class="highlight">27,000</td>
-                        <td class="highlight">35,000</td>
-                    </tr>
-                    <tr>
-                        <td class="product-name">2번</td>
-                        <td class="product-name">500M→1G</td>
-                        <td class="highlight">10,000</td>
-                        <td class="highlight">20,000</td>
-                        <td class="highlight">27,000</td>
-                        <td class="highlight">35,000</td>
-                    </tr>
-                    <tr>
-                        <td class="product-name">3번</td>
-                        <td class="product-name">100M→1G</td>
-                        <td class="highlight">30,000</td>
-                        <td class="highlight">60,000</td>
-                        <td class="highlight">75,000</td>
-                        <td class="highlight">90,000</td>
-                    </tr>
-                    <tr>
-                        <td class="product-name">4번</td>
-                        <td class="product-name">TV 업셀</td>
-                        <td class="highlight">10,000</td>
-                        <td colspan="3" style="color: #999;">그레이드 없음</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="fee-note">
-                <strong>📌 계산 방법</strong><br>
-                <strong>1. 기본 수수료:</strong> 각 건마다 지급됩니다.<br>
-                <strong>2. 그레이드 수수료:</strong> 각 건마다 지급되며, 월 누적 건수에 따라 단가가 상승합니다.<br><br>
-                <strong>💡 예시:</strong> 100M→500M을 9건 유치한 경우<br>
-                → 기본 수수료: 10,000원 × 9건 = 90,000원<br>
-                → 그레이드 수수료: 20,000원 × 9건 = 180,000원<br>
-                → <strong>총 인센티브: 270,000원</strong><br><br>
-                <strong>💡 예시2:</strong> 100M→1G를 11건 유치한 경우<br>
-                → 기본 수수료: 30,000원 × 11건 = 330,000원<br>
-                → 그레이드 수수료: 75,000원 × 11건 = 825,000원<br>
-                → <strong>총 인센티브: 1,155,000원</strong>
-            </div>
-        </div>
-    </div>
-
-    <div class="toast" id="toast"></div>
-
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, set, get, remove, onValue } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-        // Firebase 설정
         const firebaseConfig = {
             apiKey: "AIzaSyA89ZUSRGPxXiLetuKpBjvhLZ_EbabzQD0",
             authDomain: "honey-jina.firebaseapp.com",
@@ -1659,736 +306,73 @@
             projectId: "honey-jina",
             storageBucket: "honey-jina.firebasestorage.app",
             messagingSenderId: "453703035842",
-            appId: "1:453703035842:web:68ab1a1531b6345b79c45b",
-            measurementId: "G-ZRS7Y9YGN5"
+            appId: "1:453703035842:web:68ab1a1531b6345b79c45b"
         };
 
-        // Firebase 초기화
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        const recordsRef = ref(database, 'sales_records');
 
-        // 전역 함수로 노출
-        window.firebaseDB = {
-            database,
-            recordsRef,
-            ref,
-            set,
-            get,
-            remove,
-            onValue
-        };
-
-        // Firebase 데이터 로드 완료 후 초기화
-        window.addEventListener("DOMContentLoaded", function() {
-            setTimeout(loadFirebaseData, 100);
-        });
-    </script>
-
-    <script>
-        // 로컬 스토리지 키 (Firebase 마이그레이션용)
-        const STORAGE_KEY = 'jina_sales_records';
-        const MIGRATED_KEY = 'firebase_migrated';
-        
-        // 현재 선택된 연월
-        let currentYear = new Date().getFullYear();
-        let currentMonth = new Date().getMonth() + 1;
-        
-        // 삭제할 날짜 임시 저장
-        let deleteTarget = null;
-        
-        // 전역 데이터 캐시
-        let cachedRecords = [];
-        let isLoading = false;
-
-        // 오늘 날짜 설정
-        document.getElementById('dateInput').valueAsDate = new Date();
-
-        // Firebase에서 데이터 로드
-        async function loadFirebaseData() {
-            // Firebase 초기화 확인 (최대 5초 대기)
-            let attempts = 0;
-            while ((!window.firebaseDB || !window.firebaseDB.get) && attempts < 50) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-                attempts++;
-            }
-
-            if (!window.firebaseDB || !window.firebaseDB.get) {
-                console.error('Firebase 초기화 실패');
-                showToast('Firebase 연결 실패. 페이지를 새로고침해주세요.', 'error');
-                return;
-            }
-
-            isLoading = true;
-            try {
-                console.log('Firebase 데이터 로드 시작...');
-                const snapshot = await window.firebaseDB.get(window.firebaseDB.recordsRef);
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    cachedRecords = Object.values(data);
-                    console.log('Firebase 데이터 로드 완료:', cachedRecords.length, '개');
-                } else {
-                    console.log('Firebase에 데이터 없음, 마이그레이션 시도...');
-                    // 로컬스토리지에서 마이그레이션
-                    await migrateFromLocalStorage();
-                }
-                
-                // 실시간 동기화 시작
-                startRealtimeSync();
-                
-                // UI 업데이트
-                updateMonthDisplay();
-                updateDashboard(false);
-                displayHistory();
-            } catch (error) {
-                console.error('Firebase 로드 오류:', error);
-                showToast('데이터 로드 중 오류가 발생했습니다', 'error');
-            } finally {
-                isLoading = false;
-            }
-        }
-
-        // 로컬스토리지에서 Firebase로 마이그레이션
-        async function migrateFromLocalStorage() {
-            const migrated = localStorage.getItem(MIGRATED_KEY);
-            if (migrated) return;
-
-            const localData = localStorage.getItem(STORAGE_KEY);
-            if (localData) {
-                const records = JSON.parse(localData);
-                if (records.length > 0) {
-                    await saveData(records);
-                    localStorage.setItem(MIGRATED_KEY, 'true');
-                    showToast('기존 데이터를 클라우드로 이동했습니다! ☁️', 'success');
-                }
-            }
-        }
-
-        // 실시간 동기화
-        function startRealtimeSync() {
-            window.firebaseDB.onValue(window.firebaseDB.recordsRef, (snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    cachedRecords = Object.values(data);
-                    console.log('Firebase 데이터 동기화:', cachedRecords);
-                } else {
-                    cachedRecords = [];
-                }
-                // 로딩 중이 아닐 때만 UI 업데이트
-                if (!isLoading) {
-                    updateDashboard(false);
-                    displayHistory();
-                }
-            });
-        }
-
-        // 현재 월 표시 업데이트
-        function updateMonthDisplay() {
-            const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
-            document.getElementById('currentMonth').textContent = `${currentYear}년 ${monthNames[currentMonth - 1]}`;
-        }
-
-        // 월 변경
-        function changeMonth(delta) {
-            currentMonth += delta;
-            if (currentMonth > 12) {
-                currentMonth = 1;
-                currentYear++;
-            } else if (currentMonth < 1) {
-                currentMonth = 12;
-                currentYear--;
-            }
-            updateMonthDisplay();
-            updateDashboard(true);
-            displayHistory();
-        }
-
-        // 현재 월 기준으로 필터링된 데이터 가져오기
-        function getCurrentMonthData() {
-            const monthStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}`;
-            return cachedRecords.filter(record => record.date.startsWith(monthStr));
-        }
-
-        // 달력 열기
-        function openCalendar() {
-            const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
-            document.getElementById('calendarTitle').textContent = `${currentYear}년 ${monthNames[currentMonth - 1]}`;
-            
-            generateCalendar();
-            document.getElementById('calendarModal').classList.add('show');
-        }
-
-        // 달력 닫기
-        function closeCalendar() {
-            document.getElementById('calendarModal').classList.remove('show');
-        }
-
-        // 달력 생성
-        function generateCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const records = getCurrentMonthData();
-            
-            // 요일 헤더
-            const dayHeaders = ['일', '월', '화', '수', '목', '금', '토'];
-            let html = dayHeaders.map(day => `<div class="calendar-day-header">${day}</div>`).join('');
-            
-            // 해당 월의 첫날과 마지막 날
-            const firstDay = new Date(currentYear, currentMonth - 1, 1);
-            const lastDay = new Date(currentYear, currentMonth, 0);
-            const firstDayOfWeek = firstDay.getDay();
-            const daysInMonth = lastDay.getDate();
-            
-            // 오늘 날짜
-            const today = new Date();
-            const isCurrentMonth = today.getFullYear() === currentYear && today.getMonth() + 1 === currentMonth;
-            
-            // 이전 달 빈 칸
-            for (let i = 0; i < firstDayOfWeek; i++) {
-                html += '<div class="calendar-day"></div>';
-            }
-            
-            // 날짜 채우기
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${currentYear}-${String(currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const dayRecord = records.find(r => r.date === dateStr);
-                
-                let classes = 'calendar-day current-month';
-                if (isCurrentMonth && day === today.getDate()) {
-                    classes += ' today';
-                }
-                if (dayRecord) {
-                    classes += ' has-data';
-                }
-                
-                let content = `<div class="calendar-day-number">${day}</div>`;
-                if (dayRecord) {
-                    const total = (dayRecord.case1 || 0) + (dayRecord.case2 || 0) + 
-                                 (dayRecord.case3 || 0) + (dayRecord.case4 || 0);
-                    content += `<div class="calendar-day-count">${total}건</div>`;
-                }
-                
-                html += `<div class="${classes}">${content}</div>`;
-            }
-            
-            grid.innerHTML = html;
-        }
-
-        // 확인 다이얼로그 열기
-        function openConfirmDialog(date) {
-            deleteTarget = date;
-            const record = cachedRecords.find(r => r.date === date);
-            if (record) {
-                let message = `${date} 실적을 삭제하시겠습니까?\n\n`;
-                if (record.case1) message += `100M→500M: ${record.case1}건\n`;
-                if (record.case2) message += `500M→1G: ${record.case2}건\n`;
-                if (record.case3) message += `100M→1G: ${record.case3}건\n`;
-                if (record.case4) message += `TV 업셀: ${record.case4}건`;
-                
-                document.getElementById('confirmMessage').textContent = message;
-            }
-            document.getElementById('confirmDialog').classList.add('show');
-        }
-
-        // 수수료표 모달 열기
-        function openFeeTable() {
-            document.getElementById('feeTableModal').classList.add('show');
-        }
-
-        // 수수료표 모달 닫기
-        function closeFeeTable() {
-            document.getElementById('feeTableModal').classList.remove('show');
-        }
-
-        // 확인 다이얼로그 닫기
-        function closeConfirmDialog() {
-            document.getElementById('confirmDialog').classList.remove('show');
-            deleteTarget = null;
-        }
-
-        // 삭제 확인
-        async function confirmDelete() {
-            if (deleteTarget) {
-                await deleteRecord(deleteTarget);
-                closeConfirmDialog();
-            }
-        }
-
-        // 실적 삭제 (Firebase)
-        async function deleteRecord(date) {
-            try {
-                isLoading = true;
-                const newRecords = cachedRecords.filter(r => r.date !== date);
-                await saveData(newRecords);
-                
-                // UI 즉시 업데이트
-                isLoading = false;
-                updateDashboard(true);
-                displayHistory();
-                
-                showToast('실적이 삭제되었습니다 🗑️', 'success');
-            } catch (error) {
-                console.error('삭제 오류:', error);
-                showToast('삭제 중 오류가 발생했습니다', 'error');
-                isLoading = false;
-            }
-        }
-
-        // 파티클 효과 생성
-        function createParticle(x, y, emoji) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.textContent = emoji;
-            particle.style.left = x + 'px';
-            particle.style.top = y + 'px';
-            document.getElementById('particles').appendChild(particle);
-            
-            setTimeout(() => particle.remove(), 3000);
-        }
-
-        // 랜덤 파티클 생성
-        function createRandomParticles(count, emojis) {
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = window.innerHeight;
-                    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-                    createParticle(x, y, emoji);
-                }, i * 100);
-            }
-        }
-
-        // 축하 클릭 효과
-        function celebrateClick() {
-            createRandomParticles(15, ['🎉', '💰', '✨', '🌟', '💛', '🍯']);
-        }
-
-        // 숫자 카운팅 애니메이션
-        function animateValue(element, start, end, duration) {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const value = Math.floor(progress * (end - start) + start);
-                element.textContent = formatCurrency(value);
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        // 숫자 카운팅 애니메이션 (건수용)
-        function animateCount(element, start, end, duration, suffix) {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const value = Math.floor(progress * (end - start) + start);
-                element.textContent = value + suffix;
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
-
-        // 귀여운 메시지 오버레이 표시
-        function showCuteMessage() {
-            const overlay = document.getElementById('cuteOverlay');
-            overlay.classList.add('show');
-            
-            // 하트 파티클 효과
-            createRandomParticles(30, ['💖', '💕', '💗', '💝', '💓', '💞', '🌸', '✨', '🌟']);
-            
-            // 3초 후 자동으로 닫기
-            setTimeout(() => {
-                overlay.classList.remove('show');
-            }, 3000);
-        }
-
-        // 데이터 로드 (캐시에서)
-        function loadData() {
-            return cachedRecords;
-        }
-
-        // 데이터 저장 (Firebase)
-        async function saveData(records) {
-            try {
-                // Firebase 초기화 확인
-                if (!window.firebaseDB || !window.firebaseDB.set) {
-                    console.error('Firebase가 아직 초기화되지 않았습니다');
-                    throw new Error('Firebase 초기화 대기 중...');
-                }
-
-                // 날짜를 키로 사용하여 저장
-                const dataObject = {};
-                records.forEach(record => {
-                    const key = record.date.replace(/-/g, '');
-                    dataObject[key] = record;
-                });
-                
-                await window.firebaseDB.set(window.firebaseDB.recordsRef, dataObject);
-                cachedRecords = records;
-                console.log('Firebase 저장 완료:', records.length, '개');
-            } catch (error) {
-                console.error('Firebase 저장 오류:', error);
-                throw error;
-            }
-        }
-
-        // 금액 포맷팅
-        function formatCurrency(amount) {
-            return amount.toLocaleString('ko-KR') + '원';
-        }
-
-        // 그레이드 수수료 단가 계산
-        function getGradeRate(caseNum, count) {
+        function calculateIncentive(caseNum, count) {
             if (count === 0) return 0;
+            if (caseNum === 4) return count * 10000;
+
+            let basic = caseNum === 3 ? 30000 : 10000;
+            let grade = 0;
             
             if (caseNum === 1 || caseNum === 2) {
-                // 100M→500M, 500M→1G
-                if (count <= 9) return 20000;
-                if (count <= 11) return 27000;
-                return 35000;
+                grade = count <= 9 ? 20000 : count <= 11 ? 27000 : 35000;
             } else if (caseNum === 3) {
-                // 100M→1G
-                if (count <= 9) return 60000;
-                if (count <= 11) return 75000;
-                return 90000;
-            } else if (caseNum === 4) {
-                // TV 업셀 - 그레이드 없음
-                return 0;
+                grade = count <= 9 ? 60000 : count <= 11 ? 75000 : 90000;
             }
-            return 0;
+            
+            return (basic * count) + (grade * count);
         }
 
-        // 기본 수수료
-        function getBasicFee(caseNum, count) {
-            if (count === 0) return 0;
+        async function loadBranchData(branch) {
+            const date = new Date();
+            const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
             
-            if (caseNum === 1 || caseNum === 2) return 10000;
-            if (caseNum === 3) return 30000;
-            if (caseNum === 4) return 10000;
-            return 0;
+            const snapshot = await get(ref(database, `${branch}_records`));
+            let total = 0;
+            let funding = 0;
+
+            if (snapshot.exists()) {
+                Object.values(snapshot.val()).forEach(r => {
+                    if (r.date && r.date.startsWith(month)) {
+                        for (let i = 1; i <= 4; i++) {
+                            total += calculateIncentive(i, r[`case${i}`] || 0);
+                        }
+                        funding += r.funding || 0;
+                    }
+                });
+            }
+            return { total: total - funding, funding };
         }
 
-        // 상품별 인센티브 계산
-        function calculateCaseIncentive(caseNum, count) {
-            if (count === 0) return { basic: 0, grade: 0, total: 0 };
-            
-            // TV 업셀은 건당 10,000원만
-            if (caseNum === 4) {
-                return {
-                    basic: 0,
-                    grade: 0,
-                    total: count * 10000
-                };
-            }
-            
-            // 기본 수수료는 각 건마다 지급
-            const basicFeePerCase = getBasicFee(caseNum, 1);
-            const basicFee = basicFeePerCase * count;
-            
-            // 그레이드 수수료도 각 건마다 지급
-            const gradeRate = getGradeRate(caseNum, count);
-            const gradeFee = gradeRate * count;
-            
-            return {
-                basic: basicFee,
-                grade: gradeFee,
-                total: basicFee + gradeFee
-            };
-        }
-
-        // 대시보드 업데이트 (현재 선택된 월만)
-        function updateDashboard(animate = false) {
-            const records = getCurrentMonthData();
-            
-            // 각 상품별 누적 건수 계산
-            let case1Total = 0, case2Total = 0, case3Total = 0, case4Total = 0;
-            
-            records.forEach(record => {
-                case1Total += record.case1 || 0;
-                case2Total += record.case2 || 0;
-                case3Total += record.case3 || 0;
-                case4Total += record.case4 || 0;
-            });
-
-            // 각 상품별 인센티브 계산
-            const case1 = calculateCaseIncentive(1, case1Total);
-            const case2 = calculateCaseIncentive(2, case2Total);
-            const case3 = calculateCaseIncentive(3, case3Total);
-            const case4 = calculateCaseIncentive(4, case4Total);
-
-            // 전체 합계 (TV 업셀은 basic/grade 구분 없음)
-            const totalBasic = case1.basic + case2.basic + case3.basic;
-            const totalGrade = case1.grade + case2.grade + case3.grade;
-            const totalIncentive = case1.total + case2.total + case3.total + case4.total;
-            const totalIncentive80 = Math.floor(totalIncentive * 0.8);
-
-            // 누적 인센티브 업데이트
-            if (animate) {
-                const currentTotal = parseInt(document.getElementById('totalIncentive100').textContent.replace(/[^0-9]/g, '')) || 0;
-                animateValue(document.getElementById('totalIncentive100'), currentTotal, totalIncentive, 1000);
-                animateValue(document.getElementById('totalIncentive80'), Math.floor(currentTotal * 0.8), totalIncentive80, 1000);
-            } else {
-                document.getElementById('totalIncentive100').textContent = formatCurrency(totalIncentive);
-                document.getElementById('totalIncentive80').textContent = formatCurrency(totalIncentive80);
-            }
-
-            // 수수료 구성
-            document.getElementById('basicFeeTotal').textContent = formatCurrency(totalBasic);
-            document.getElementById('gradeFeeTotal').textContent = formatCurrency(totalGrade);
-
-            // 각 상품별 카드 업데이트
-            updateProductCard(1, case1Total, case1.total);
-            updateProductCard(2, case2Total, case2.total);
-            updateProductCard(3, case3Total, case3.total);
-            updateProductCard(4, case4Total, case4.total);
-        }
-
-        // 상품별 카드 업데이트 (진행바 포함)
-        function updateProductCard(caseNum, count, totalAmount) {
-            const currentRate = getGradeRate(caseNum, count);
-            
-            // 건수와 금액
-            document.getElementById(`case${caseNum}Count`).textContent = `${count}건`;
-            document.getElementById(`case${caseNum}Amount`).textContent = formatCurrency(totalAmount);
-
-            if (caseNum === 4) {
-                // TV 업셀은 진행바 없음
-                return;
-            }
-
-            // 현재 단가
-            if (count === 0) {
-                document.getElementById(`case${caseNum}Rate`).textContent = '⚡ 실적 없음';
-            } else {
-                document.getElementById(`case${caseNum}Rate`).textContent = `⚡ 현재: ${formatCurrency(currentRate)}/건`;
-            }
-
-            // 진행바
-            let progress = 0;
-            let progressText = '';
-            let nextGoal = '';
-            const progressBar = document.getElementById(`case${caseNum}Progress`);
-
-            if (count >= 12) {
-                progress = 100;
-                progressText = `${count}건 (최고 구간 달성!)`;
-                nextGoal = '🏆 최고 구간 달성!';
-                progressBar.classList.add('complete');
-            } else if (count >= 10) {
-                progress = 50 + ((count - 10) / 2) * 50;
-                progressText = `${count}/12건`;
-                nextGoal = `📈 12건 달성 시: ${formatCurrency(getGradeRate(caseNum, 12))}/건`;
-                progressBar.classList.remove('complete');
-            } else {
-                progress = (count / 10) * 50;
-                progressText = `${count}/10건`;
-                if (count > 0) {
-                    const nextRate = getGradeRate(caseNum, 10);
-                    const currentRate = getGradeRate(caseNum, count);
-                    const increase = nextRate - currentRate;
-                    nextGoal = `📈 10건 달성 시: +${formatCurrency(increase)}/건`;
-                }
-                progressBar.classList.remove('complete');
-            }
-
-            progressBar.style.width = progress + '%';
-            document.getElementById(`case${caseNum}ProgressText`).textContent = progressText;
-            document.getElementById(`case${caseNum}Next`).textContent = nextGoal;
-        }
-
-        // 실적 기록 표시 (현재 선택된 월만)
-        function displayHistory() {
-            const records = getCurrentMonthData();
-            const historyList = document.getElementById('historyList');
-
-            if (records.length === 0) {
-                historyList.innerHTML = '<div class="no-data">이번 달 실적이 없습니다 📝</div>';
-                return;
-            }
-
-            // 날짜순 정렬 (최신순)
-            records.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            historyList.innerHTML = records.map((record, index) => {
-                const case1 = record.case1 || 0;
-                const case2 = record.case2 || 0;
-                const case3 = record.case3 || 0;
-                const case4 = record.case4 || 0;
-
-                const case1Inc = calculateCaseIncentive(1, case1);
-                const case2Inc = calculateCaseIncentive(2, case2);
-                const case3Inc = calculateCaseIncentive(3, case3);
-                const case4Inc = calculateCaseIncentive(4, case4);
-
-                const total = case1Inc.total + case2Inc.total + case3Inc.total + case4Inc.total;
-
-                let details = '';
-                if (case1 > 0) details += `<div class="details"><span class="item-name">100M→500M</span><span class="item-value">${case1}건 / ${formatCurrency(case1Inc.total)}</span></div>`;
-                if (case2 > 0) details += `<div class="details"><span class="item-name">500M→1G</span><span class="item-value">${case2}건 / ${formatCurrency(case2Inc.total)}</span></div>`;
-                if (case3 > 0) details += `<div class="details"><span class="item-name">100M→1G</span><span class="item-value">${case3}건 / ${formatCurrency(case3Inc.total)}</span></div>`;
-                if (case4 > 0) details += `<div class="details"><span class="item-name">TV 업셀</span><span class="item-value">${case4}건 / ${formatCurrency(case4Inc.total)}</span></div>`;
-
-                return `
-                    <div class="history-item" style="animation-delay: ${index * 0.05}s" onclick="celebrateClick()">
-                        <button class="delete-btn" onclick="event.stopPropagation(); openConfirmDialog('${record.date}')">×</button>
-                        <div class="date">${record.date}</div>
-                        ${details}
-                        <div class="total">합계: ${formatCurrency(total)}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // 토스트 메시지 표시 (타입별)
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast ' + type;
-            toast.classList.add('show');
-            
-            // 파티클 효과
-            if (type === 'success') {
-                createRandomParticles(10, ['🎉', '✨', '🌟']);
-            }
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
-        }
-
-        // 실적 추가
-        async function addRecord() {
-            const date = document.getElementById('dateInput').value;
-            const case1 = parseInt(document.getElementById('case1Input').value) || 0;
-            const case2 = parseInt(document.getElementById('case2Input').value) || 0;
-            const case3 = parseInt(document.getElementById('case3Input').value) || 0;
-            const case4 = parseInt(document.getElementById('case4Input').value) || 0;
-
-            if (!date) {
-                showToast('날짜를 선택해주세요! 📅', 'warning');
-                return;
-            }
-
-            if (case1 === 0 && case2 === 0 && case3 === 0 && case4 === 0) {
-                showToast('실적을 입력해주세요! 📝', 'warning');
-                return;
-            }
-
+        async function loadPreview() {
             try {
-                isLoading = true;
-                const records = [...cachedRecords];
-                
-                // 같은 날짜 기록이 있는지 확인
-                const existingIndex = records.findIndex(r => r.date === date);
-                
-                if (existingIndex !== -1) {
-                    // 기존 기록 업데이트
-                    records[existingIndex].case1 = (records[existingIndex].case1 || 0) + case1;
-                    records[existingIndex].case2 = (records[existingIndex].case2 || 0) + case2;
-                    records[existingIndex].case3 = (records[existingIndex].case3 || 0) + case3;
-                    records[existingIndex].case4 = (records[existingIndex].case4 || 0) + case4;
-                    showToast('실적이 업데이트되었습니다! 🎉', 'success');
-                } else {
-                    // 새 기록 추가
-                    records.push({ 
-                        date, 
-                        case1, 
-                        case2, 
-                        case3, 
-                        case4
-                    });
-                    showToast('실적이 저장되었습니다! 🎉', 'success');
-                }
+                const [gyeyang, yeonsu] = await Promise.all([
+                    loadBranchData('gyeyang'),
+                    loadBranchData('yeonsu')
+                ]);
 
-                await saveData(records);
-                
-                // 입력한 날짜의 월로 자동 이동
-                const inputDate = new Date(date);
-                currentYear = inputDate.getFullYear();
-                currentMonth = inputDate.getMonth() + 1;
-                updateMonthDisplay();
-                
-                // UI 즉시 업데이트
-                isLoading = false;
-                updateDashboard(true);
-                displayHistory();
-                
-                resetInputs();
-                
-                // 축하 파티클 효과
-                createRandomParticles(20, ['💰', '🎊', '🎉', '✨', '🌟', '💛', '🍯']);
-                
-                // 귀여운 메시지 오버레이 표시
-                setTimeout(() => {
-                    showCuteMessage();
-                }, 500);
+                const total = gyeyang.total + yeonsu.total;
+                const total80 = Math.floor(total * 0.8);
+                const totalFunding = gyeyang.funding + yeonsu.funding;
+
+                document.getElementById('total100').textContent = total.toLocaleString() + '원';
+                document.getElementById('total80').textContent = total80.toLocaleString() + '원';
+                document.getElementById('totalFunding').textContent = '-' + totalFunding.toLocaleString() + '원';
+                document.getElementById('gyeyangTotal').textContent = gyeyang.total.toLocaleString() + '원';
+                document.getElementById('yeonsuTotal').textContent = yeonsu.total.toLocaleString() + '원';
+                document.getElementById('loading').style.display = 'none';
             } catch (error) {
-                console.error('저장 오류:', error);
-                showToast('저장 중 오류가 발생했습니다', 'error');
-                isLoading = false;
+                console.error(error);
+                document.getElementById('loading').textContent = '데이터 로드 실패';
             }
         }
 
-        // 입력 초기화
-        function resetInputs() {
-            document.getElementById('case1Input').value = '0';
-            document.getElementById('case2Input').value = '0';
-            document.getElementById('case3Input').value = '0';
-            document.getElementById('case4Input').value = '0';
-            document.getElementById('dateInput').valueAsDate = new Date();
-        }
-
-        // 입력 필드에 이벤트 리스너 추가
-        const inputIds = ['case1Input', 'case2Input', 'case3Input', 'case4Input'];
-        
-        inputIds.forEach(id => {
-            const input = document.getElementById(id);
-            
-            input.addEventListener('focus', function() {
-                this.select();
-            });
-            
-            input.addEventListener('input', function() {
-                const value = parseInt(this.value) || 0;
-                if (value > 0) {
-                    this.style.color = '#E65100';
-                    this.style.fontWeight = '700';
-                } else {
-                    this.style.color = '';
-                    this.style.fontWeight = '';
-                }
-            });
-        });
-
-        // 모달 외부 클릭 시 닫기
-        document.getElementById('calendarModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeCalendar();
-            }
-        });
-
-        document.getElementById('confirmDialog').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeConfirmDialog();
-            }
-        });
-
-        document.getElementById('feeTableModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeFeeTable();
-            }
-        });
-
-        // 웰컴 파티클 효과
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                createRandomParticles(8, ['🍯', '✨', '🌟']);
-            }, 500);
-        });
+        window.addEventListener('DOMContentLoaded', loadPreview);
     </script>
 </body>
 </html>
