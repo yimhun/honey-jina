@@ -333,20 +333,32 @@
             const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
             
             const snapshot = await get(ref(database, `${branch}_records`));
-            let total = 0;
-            let funding = 0;
+            
+            // 월별 누적 건수
+            const counts = { case1: 0, case2: 0, case3: 0, case4: 0 };
+            let totalFunding = 0;
 
             if (snapshot.exists()) {
                 Object.values(snapshot.val()).forEach(r => {
                     if (r.date && r.date.startsWith(month)) {
-                        for (let i = 1; i <= 4; i++) {
-                            total += calculateIncentive(i, r[`case${i}`] || 0);
-                        }
-                        funding += r.funding || 0;
+                        // 먼저 건수를 모두 합산
+                        counts.case1 += r.case1 || 0;
+                        counts.case2 += r.case2 || 0;
+                        counts.case3 += r.case3 || 0;
+                        counts.case4 += r.case4 || 0;
+                        totalFunding += r.funding || 0;
                     }
                 });
             }
-            return { total: total - funding, funding };
+            
+            // 누적된 건수로 인센티브 계산
+            const incentiveTotal = calculateIncentive(1, counts.case1) +
+                                  calculateIncentive(2, counts.case2) +
+                                  calculateIncentive(3, counts.case3) +
+                                  calculateIncentive(4, counts.case4);
+            
+            const netTotal = incentiveTotal - totalFunding;
+            return { incentiveTotal, funding: totalFunding, netTotal };
         }
 
         async function loadPreview() {
@@ -356,15 +368,19 @@
                     loadBranchData('yeonsu')
                 ]);
 
-                const total = gyeyang.total + yeonsu.total;
-                const total80 = Math.floor(total * 0.8);
+                // 전체 인센티브 (펀딩 차감 전)
+                const totalIncentive = gyeyang.incentiveTotal + yeonsu.incentiveTotal;
+                // 전체 펀딩
                 const totalFunding = gyeyang.funding + yeonsu.funding;
+                // 실제 지급액 (인센티브 - 펀딩)
+                const total100 = totalIncentive - totalFunding;
+                const total80 = Math.floor(total100 * 0.8);
 
-                document.getElementById('total100').textContent = total.toLocaleString() + '원';
+                document.getElementById('total100').textContent = total100.toLocaleString() + '원';
                 document.getElementById('total80').textContent = total80.toLocaleString() + '원';
                 document.getElementById('totalFunding').textContent = '-' + totalFunding.toLocaleString() + '원';
-                document.getElementById('gyeyangTotal').textContent = gyeyang.total.toLocaleString() + '원';
-                document.getElementById('yeonsuTotal').textContent = yeonsu.total.toLocaleString() + '원';
+                document.getElementById('gyeyangTotal').textContent = gyeyang.netTotal.toLocaleString() + '원';
+                document.getElementById('yeonsuTotal').textContent = yeonsu.netTotal.toLocaleString() + '원';
                 document.getElementById('loading').style.display = 'none';
             } catch (error) {
                 console.error(error);
